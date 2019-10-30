@@ -1,0 +1,6 @@
+use_frameworks!
+target 'PahkatClient_Tests' do
+  pod 'PahkatClient', :path => '../'
+  
+  
+end
