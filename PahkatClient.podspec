@@ -31,7 +31,8 @@ TODO: Add long description of the pod here.
   s.pod_target_xcconfig = {
     'CARGO_HOME': "$(HOME)/.cargo",
     'OTHER_LDFLAGS': '-lpahkat_client',
-    'ENABLE_BITCODE': 'NO'
+    'ENABLE_BITCODE': 'NO',
+    'LZMA_API_STATIC': '1'
   }
   s.macos.pod_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}"'
