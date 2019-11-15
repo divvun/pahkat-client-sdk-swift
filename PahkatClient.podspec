@@ -25,6 +25,7 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'Apache-2.0 OR MIT' }
   s.author           = { 'Brendan Molloy' => 'brendan@bbqsrc.net' }
   s.source           = { :git => 'https://github.com/bbqsrc/pahkat-client-sdk-swift', :tag => s.version.to_s }
+  # s.static_framework = true
 
   s.macos.deployment_target = '10.10'
   s.ios.deployment_target = '8.0'
@@ -32,7 +33,8 @@ TODO: Add long description of the pod here.
     'CARGO_HOME': "$(HOME)/.cargo",
     'OTHER_LDFLAGS': '-lpahkat_client',
     'ENABLE_BITCODE': 'NO',
-    'LZMA_API_STATIC': '1'
+    'LZMA_API_STATIC': '1',
+    'DEFINES_MODULE' => 'YES'
   }
   s.macos.pod_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}"'
