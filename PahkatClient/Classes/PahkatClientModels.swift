@@ -370,11 +370,25 @@ public enum InstallerTarget: Codable {
     }
 }
 
-public enum PackageInstallStatus: String, Codable {
-    case notInstalled
-    case upToDate
-    case requiresUpdate
-    case versionSkipped
+public enum PackageInstallStatus: Int8, Codable {
+    case notInstalled = 0
+    case upToDate = 1
+    case requiresUpdate = 2
+    case versionSkipped = 3
+    
+    // Errors
+    case noPackage = -1
+    case noInstaller = -2
+    case wrongInstallerType = -3
+    case parsingVersion = -4
+    case invalidInstallPath = -5
+    case invalidMetadata = -6
+}
+
+extension PackageInstallStatus {
+    public func isError() -> Bool {
+        return self.rawValue < 0
+    }
 }
 
 public struct PackageStatusResponse : Codable {
@@ -440,7 +454,7 @@ public struct PackageKey : Codable, Hashable, Comparable {
     private let packagesMeta: Packages
     private let virtualsMeta: Virtuals
     
-    var statuses: [PackageKey: PackageStatusResponse] = [:]
+    public var statuses: [PackageKey: PackageStatusResponse] = [:]
     
     init(repository: Repository, packages: Packages, virtuals: Virtuals, channel: Repository.Channels) {
         self.meta = repository

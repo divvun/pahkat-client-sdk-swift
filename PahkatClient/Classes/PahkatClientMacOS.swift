@@ -1,14 +1,6 @@
+#if TARGET_OS_OSX
 import Foundation
 
-//private func assertNoError() throws {
-//    if pahkat_client_err != nil {
-//        let error = String(cString: pahkat_client_err!)
-//        pahkat_client_err_free()
-//        throw PahkatClientError(message: error)
-//    }
-//}
-
-@available(macOS 10.10, *)
 class MacOSPackageStore {
     static func `default`() -> MacOSPackageStore {
         let handle = pahkat_macos_package_store_default()
@@ -78,3 +70,5 @@ class MacOSPackageStore {
         // TODO
     }
 }
+
+#endif

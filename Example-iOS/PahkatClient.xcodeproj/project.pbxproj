@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1786EBA22253CA9A0FDFBFED /* Pods_PahkatClient_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAC1C774F1D863D8B386CAE /* Pods_PahkatClient_Example.framework */; };
-		519B9ADCBB6478A010F31D05 /* Pods_PahkatClient_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91EDE9B0C45D9B576F8B275 /* Pods_PahkatClient_Tests.framework */; };
-		C607B4EE237DCA5D00B0C4A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C607B4ED237DCA5D00B0C4A7 /* AppDelegate.swift */; };
-		C607B4F0237DCA5F00B0C4A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C607B4EF237DCA5F00B0C4A7 /* Assets.xcassets */; };
-		C607B4F3237DCA5F00B0C4A7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C607B4F1237DCA5F00B0C4A7 /* MainMenu.xib */; };
-		ED83F68F20348A760038D96B /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED83F68E20348A760038D96B /* Tests.swift */; };
+		C6076CDE237E325D0019F6D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6076CDD237E325D0019F6D1 /* AppDelegate.swift */; };
+		C6076CE0237E325D0019F6D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6076CDF237E325D0019F6D1 /* SceneDelegate.swift */; };
+		C6076CE2237E325D0019F6D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6076CE1237E325D0019F6D1 /* ViewController.swift */; };
+		C6076CE5237E325D0019F6D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6076CE3237E325D0019F6D1 /* Main.storyboard */; };
+		C6076CE7237E325E0019F6D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6076CE6237E325E0019F6D1 /* Assets.xcassets */; };
+		C6076CEA237E325E0019F6D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6076CE8237E325E0019F6D1 /* LaunchScreen.storyboard */; };
+		C6C3FA4E237F04520006E81B /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C3FA4D237F04520006E81B /* TableCell.swift */; };
+		EAE584FE74D93C0897C4A787 /* Pods_PahkatClient_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAC1C774F1D863D8B386CAE /* Pods_PahkatClient_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,34 +26,28 @@
 		A56D4E2BC8412DEE654CAF09 /* Pods-PahkatClient Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PahkatClient Example.release.xcconfig"; path = "Target Support Files/Pods-PahkatClient Example/Pods-PahkatClient Example.release.xcconfig"; sourceTree = "<group>"; };
 		AFAC1C774F1D863D8B386CAE /* Pods_PahkatClient_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PahkatClient_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78398CBEC81489C39D02D52 /* Pods-PahkatClient_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PahkatClient_Tests.release.xcconfig"; path = "Target Support Files/Pods-PahkatClient_Tests/Pods-PahkatClient_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		C607B4EB237DCA5D00B0C4A7 /* PahkatClient_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PahkatClient_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C607B4ED237DCA5D00B0C4A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C607B4EF237DCA5F00B0C4A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C607B4F2237DCA5F00B0C4A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		C607B4F4237DCA5F00B0C4A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C607B4F5237DCA5F00B0C4A7 /* PahkatClient_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PahkatClient_Example.entitlements; sourceTree = "<group>"; };
+		C6076CDB237E325D0019F6D1 /* PahkatClient_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PahkatClient_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6076CDD237E325D0019F6D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C6076CDF237E325D0019F6D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C6076CE1237E325D0019F6D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C6076CE4237E325D0019F6D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C6076CE6237E325E0019F6D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C6076CE9237E325E0019F6D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C6076CEB237E325E0019F6D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C6C3FA4D237F04520006E81B /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
 		C95BC36036B4CF2133CF3BB4 /* Pods-PahkatClient Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PahkatClient Example.debug.xcconfig"; path = "Target Support Files/Pods-PahkatClient Example/Pods-PahkatClient Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D430F4ADC7A1E74B790992FC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		ED83F68A20348A760038D96B /* PahkatClient_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PahkatClient_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED83F68E20348A760038D96B /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		ED83F69020348A760038D96B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F91EDE9B0C45D9B576F8B275 /* Pods_PahkatClient_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PahkatClient_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C607B4E8237DCA5D00B0C4A7 /* Frameworks */ = {
+		C6076CD8237E325D0019F6D1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1786EBA22253CA9A0FDFBFED /* Pods_PahkatClient_Example.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ED83F68720348A760038D96B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				519B9ADCBB6478A010F31D05 /* Pods_PahkatClient_Tests.framework in Frameworks */,
+				EAE584FE74D93C0897C4A787 /* Pods_PahkatClient_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,13 +76,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C607B4EC237DCA5D00B0C4A7 /* PahkatClient_Example */ = {
+		C6076CDC237E325D0019F6D1 /* PahkatClient_Example */ = {
 			isa = PBXGroup;
 			children = (
-				C607B4ED237DCA5D00B0C4A7 /* AppDelegate.swift */,
-				C607B4F1237DCA5F00B0C4A7 /* MainMenu.xib */,
-				C607B4F4237DCA5F00B0C4A7 /* Info.plist */,
-				C607B4F5237DCA5F00B0C4A7 /* PahkatClient_Example.entitlements */,
+				C6076CDD237E325D0019F6D1 /* AppDelegate.swift */,
+				C6076CDF237E325D0019F6D1 /* SceneDelegate.swift */,
+				C6076CE1237E325D0019F6D1 /* ViewController.swift */,
+				C6076CE3237E325D0019F6D1 /* Main.storyboard */,
+				C6076CE6237E325E0019F6D1 /* Assets.xcassets */,
+				C6076CE8237E325E0019F6D1 /* LaunchScreen.storyboard */,
+				C6076CEB237E325E0019F6D1 /* Info.plist */,
+				C6C3FA4D237F04520006E81B /* TableCell.swift */,
 			);
 			path = PahkatClient_Example;
 			sourceTree = "<group>";
@@ -95,9 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				ED83F69A20348B650038D96B /* Podspec Metadata */,
-				C607B4EF237DCA5F00B0C4A7 /* Assets.xcassets */,
 				ED83F68D20348A760038D96B /* Tests */,
-				C607B4EC237DCA5D00B0C4A7 /* PahkatClient_Example */,
+				C6076CDC237E325D0019F6D1 /* PahkatClient_Example */,
 				ED83F67920348A760038D96B /* Products */,
 				7E13E270589B51455D028063 /* Pods */,
 				A61444ED6B827D47469BD94B /* Frameworks */,
@@ -107,8 +106,7 @@
 		ED83F67920348A760038D96B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ED83F68A20348A760038D96B /* PahkatClient_Tests.xctest */,
-				C607B4EB237DCA5D00B0C4A7 /* PahkatClient_Example.app */,
+				C6076CDB237E325D0019F6D1 /* PahkatClient_Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,15 +133,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C607B4EA237DCA5D00B0C4A7 /* PahkatClient_Example */ = {
+		C6076CDA237E325D0019F6D1 /* PahkatClient_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C607B4F8237DCA5F00B0C4A7 /* Build configuration list for PBXNativeTarget "PahkatClient_Example" */;
+			buildConfigurationList = C6076CEE237E325E0019F6D1 /* Build configuration list for PBXNativeTarget "PahkatClient_Example" */;
 			buildPhases = (
-				593337A485CB03F741EDD471 /* [CP] Check Pods Manifest.lock */,
-				C607B4E7237DCA5D00B0C4A7 /* Sources */,
-				C607B4E8237DCA5D00B0C4A7 /* Frameworks */,
-				C607B4E9237DCA5D00B0C4A7 /* Resources */,
-				5EB4E5147BC2A3FB649C3BB5 /* [CP] Embed Pods Frameworks */,
+				B22472ED818D0B27BC617339 /* [CP] Check Pods Manifest.lock */,
+				C6076CD7237E325D0019F6D1 /* Sources */,
+				C6076CD8237E325D0019F6D1 /* Frameworks */,
+				C6076CD9237E325D0019F6D1 /* Resources */,
+				2374F7ACA4CF2D1DEBACEDE4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -151,27 +149,8 @@
 			);
 			name = PahkatClient_Example;
 			productName = PahkatClient_Example;
-			productReference = C607B4EB237DCA5D00B0C4A7 /* PahkatClient_Example.app */;
+			productReference = C6076CDB237E325D0019F6D1 /* PahkatClient_Example.app */;
 			productType = "com.apple.product-type.application";
-		};
-		ED83F68920348A760038D96B /* PahkatClient_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = ED83F69620348A760038D96B /* Build configuration list for PBXNativeTarget "PahkatClient_Tests" */;
-			buildPhases = (
-				3EC93B7674F444CBCA5AD312 /* [CP] Check Pods Manifest.lock */,
-				ED83F68620348A760038D96B /* Sources */,
-				ED83F68720348A760038D96B /* Frameworks */,
-				ED83F68820348A760038D96B /* Resources */,
-				7A3034001C37A9134FC1DC88 /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = PahkatClient_Tests;
-			productName = PahkatClientTests;
-			productReference = ED83F68A20348A760038D96B /* PahkatClient_Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -183,14 +162,9 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
-					C607B4EA237DCA5D00B0C4A7 = {
+					C6076CDA237E325D0019F6D1 = {
 						CreatedOnToolsVersion = 11.2.1;
 						ProvisioningStyle = Manual;
-					};
-					ED83F68920348A760038D96B = {
-						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
-						TestTargetID = ED83F67720348A760038D96B;
 					};
 				};
 			};
@@ -207,55 +181,44 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ED83F68920348A760038D96B /* PahkatClient_Tests */,
-				C607B4EA237DCA5D00B0C4A7 /* PahkatClient_Example */,
+				C6076CDA237E325D0019F6D1 /* PahkatClient_Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C607B4E9237DCA5D00B0C4A7 /* Resources */ = {
+		C6076CD9237E325D0019F6D1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C607B4F0237DCA5F00B0C4A7 /* Assets.xcassets in Resources */,
-				C607B4F3237DCA5F00B0C4A7 /* MainMenu.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ED83F68820348A760038D96B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				C6076CEA237E325E0019F6D1 /* LaunchScreen.storyboard in Resources */,
+				C6076CE7237E325E0019F6D1 /* Assets.xcassets in Resources */,
+				C6076CE5237E325D0019F6D1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3EC93B7674F444CBCA5AD312 /* [CP] Check Pods Manifest.lock */ = {
+		2374F7ACA4CF2D1DEBACEDE4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/PahkatClient/PahkatClient.framework",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PahkatClient_Tests-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PahkatClient.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		593337A485CB03F741EDD471 /* [CP] Check Pods Manifest.lock */ = {
+		B22472ED818D0B27BC617339 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -277,76 +240,43 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5EB4E5147BC2A3FB649C3BB5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/PahkatClient/PahkatClient.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PahkatClient.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7A3034001C37A9134FC1DC88 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Tests/Pods-PahkatClient_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/PahkatClient/PahkatClient.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PahkatClient.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Tests/Pods-PahkatClient_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C607B4E7237DCA5D00B0C4A7 /* Sources */ = {
+		C6076CD7237E325D0019F6D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C607B4EE237DCA5D00B0C4A7 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		ED83F68620348A760038D96B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				ED83F68F20348A760038D96B /* Tests.swift in Sources */,
+				C6076CE2237E325D0019F6D1 /* ViewController.swift in Sources */,
+				C6076CDE237E325D0019F6D1 /* AppDelegate.swift in Sources */,
+				C6C3FA4E237F04520006E81B /* TableCell.swift in Sources */,
+				C6076CE0237E325D0019F6D1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C607B4F1237DCA5F00B0C4A7 /* MainMenu.xib */ = {
+		C6076CE3237E325D0019F6D1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C607B4F2237DCA5F00B0C4A7 /* Base */,
+				C6076CE4237E325D0019F6D1 /* Base */,
 			);
-			name = MainMenu.xib;
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C6076CE8237E325E0019F6D1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C6076CE9237E325E0019F6D1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C607B4F6237DCA5F00B0C4A7 /* Debug */ = {
+		C6076CEC237E325E0019F6D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 99424B16D75EAD2A9120B3F9 /* Pods-PahkatClient_Example.debug.xcconfig */;
 			buildSettings = {
@@ -354,24 +284,23 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_ENTITLEMENTS = PahkatClient_Example/PahkatClient_Example.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = PahkatClient_Example/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "no.divvun.PahkatClient-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		C607B4F7237DCA5F00B0C4A7 /* Release */ = {
+		C6076CED237E325E0019F6D1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B273A50F861D097C85974D8 /* Pods-PahkatClient_Example.release.xcconfig */;
 			buildSettings = {
@@ -379,19 +308,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_ENTITLEMENTS = PahkatClient_Example/PahkatClient_Example.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = PahkatClient_Example/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "no.divvun.PahkatClient-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -443,6 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -494,6 +424,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -501,46 +432,14 @@
 			};
 			name = Release;
 		};
-		ED83F69720348A760038D96B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 359D91B43915AFBCB5511599 /* Pods-PahkatClient_Tests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.PahkatClient-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "";
-			};
-			name = Debug;
-		};
-		ED83F69820348A760038D96B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B78398CBEC81489C39D02D52 /* Pods-PahkatClient_Tests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.PahkatClient-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C607B4F8237DCA5F00B0C4A7 /* Build configuration list for PBXNativeTarget "PahkatClient_Example" */ = {
+		C6076CEE237E325E0019F6D1 /* Build configuration list for PBXNativeTarget "PahkatClient_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C607B4F6237DCA5F00B0C4A7 /* Debug */,
-				C607B4F7237DCA5F00B0C4A7 /* Release */,
+				C6076CEC237E325E0019F6D1 /* Debug */,
+				C6076CED237E325E0019F6D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -550,15 +449,6 @@
 			buildConfigurations = (
 				ED83F69120348A760038D96B /* Debug */,
 				ED83F69220348A760038D96B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		ED83F69620348A760038D96B /* Build configuration list for PBXNativeTarget "PahkatClient_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				ED83F69720348A760038D96B /* Debug */,
-				ED83F69820348A760038D96B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,16 @@
+PODS:
+  - PahkatClient (0.1.0)
+
+DEPENDENCIES:
+  - PahkatClient (from `../`)
+
+EXTERNAL SOURCES:
+  PahkatClient:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PahkatClient: 803f9df053bf8aa3c457eb3e610420c73444ecd3
+
+PODFILE CHECKSUM: 168f051192f12553733ee7e5c3712a31cd334c1f
+
+COCOAPODS: 1.8.3

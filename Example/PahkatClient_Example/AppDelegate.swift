@@ -61,6 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let indexes = try! store.repoIndexes()
         let index = indexes.first!
+        print(try! store.allStatuses(repo: RepoRecord(url: index.meta.base, channel: .stable)))
         let pkg = index.packages.values.first!
         let pkgKey = index.absoluteKey(for: pkg)
         

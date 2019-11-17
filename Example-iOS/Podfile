@@ -1,0 +1,9 @@
+supports_swift_versions '>= 5.0'
+use_frameworks!
+platform :ios, "9.0"
+
+target 'PahkatClient_Example' do
+  pod 'PahkatClient', :path => '../'
+  
+end
+

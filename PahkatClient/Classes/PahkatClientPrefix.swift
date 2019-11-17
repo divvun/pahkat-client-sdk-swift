@@ -1,5 +1,14 @@
 import Foundation
 
+public struct RepoRecord: Codable, Equatable, Hashable {
+    let url: URL
+    let channel: Repository.Channels
+    
+    public init(url: URL, channel: Repository.Channels) {
+        self.url = url
+        self.channel = channel
+    }
+}
 
 public class PrefixPackageStore: NSObject {
     private let handle: UnsafeRawPointer
@@ -70,7 +79,7 @@ public class PrefixPackageStore: NSObject {
         let task = self.urlSession.downloadTask(with: installer.url)
         task.taskDescription = packageKey.rawValue
         
-        if #available(OSX 10.13, iOS 9.0, *) {
+        if #available(OSX 10.13, iOS 11.0, *) {
             task.countOfBytesClientExpectsToReceive = Int64(installer.size)
         } else {
             // Do nothing.
@@ -125,6 +134,25 @@ public class PrefixPackageStore: NSObject {
         
         let repos = try jsonDecoder.decode([RepositoryIndex].self, from: reposJson)
         return repos
+    }
+    
+    public func allStatuses(repo: RepoRecord) throws -> [String: PackageStatusResponse] {
+        let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!
+        
+        let statusesCStr = repoRecordStr.withCString { cStr in
+            pahkat_prefix_package_store_all_statuses(handle, cStr, pahkat_client_err_callback)
+        }
+        try assertNoError()
+        defer { pahkat_str_free(statusesCStr) }
+        
+        let statusesData = String(cString: statusesCStr!).data(using: .utf8)!
+        let statuses = try JSONDecoder().decode(
+            [String: PackageInstallStatus].self,
+            from: statusesData)
+        
+        return statuses.mapValues { status in
+            PackageStatusResponse(status: status, target: InstallerTarget.system)
+        }
     }
     
     public func transaction(actions: [TransactionAction<Empty>]) throws -> PackageTransaction {

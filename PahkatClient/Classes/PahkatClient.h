@@ -124,7 +124,12 @@ pahkat_macos_package_store_load(const rust_path_t *_Nonnull path, ERR_CALLBACK);
 
 extern package_status_t
 pahkat_macos_package_store_status(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
-        
+
+extern json_str_t *_Nullable
+pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
+                                         const json_str_t *_Nonnull repo_record,
+                                         ERR_CALLBACK);
+
 extern rust_path_t *_Nullable
 pahkat_macos_package_store_download(const void *_Nonnull handle,
                                     const char *_Nonnull package_key,
