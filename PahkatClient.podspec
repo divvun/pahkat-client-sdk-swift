@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'CARGO_HOME': "$(HOME)/.cargo",
     'ENABLE_BITCODE': 'NO',
-    'OTHER_LDFLAGS': '-lpahkat_client'
+    'OTHER_LDFLAGS': '-lpahkat_client',
     'LZMA_API_STATIC': '1',
     'DEFINES_MODULE' => 'YES'
   }
