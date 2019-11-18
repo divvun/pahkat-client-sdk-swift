@@ -13,17 +13,19 @@ Pod::Spec.new do |s|
 
   s.macos.deployment_target = '10.10'
   s.ios.deployment_target = '9.0'
+  s.user_target_xcconfig = {
+    'OTHER_LDFLAGS': '-lpahkat_client'
+  }
   s.pod_target_xcconfig = {
     'CARGO_HOME': "$(HOME)/.cargo",
-    'OTHER_LDFLAGS': '-lpahkat_client',
     'ENABLE_BITCODE': 'NO',
     'LZMA_API_STATIC': '1',
     'DEFINES_MODULE' => 'YES'
   }
-  s.macos.pod_target_xcconfig = {
+  s.macos.user_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}"'
   }
-  s.ios.pod_target_xcconfig = {
+  s.ios.user_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}"'
   }
   s.ios.script_phases = [
