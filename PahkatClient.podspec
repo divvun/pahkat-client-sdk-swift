@@ -41,8 +41,7 @@ Pod::Spec.new do |s|
       :execution_position => :before_compile,
       :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
           ${CARGO_HOME}/bin/cargo lipo --xcode-integ --features ffi,prefix &&\
-          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries
-      ",
+          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
   ]
@@ -52,7 +51,7 @@ Pod::Spec.new do |s|
       :execution_position => :before_compile,
       :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
           ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix &&\
-          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
+          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
   ]
