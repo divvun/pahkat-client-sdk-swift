@@ -10,20 +10,24 @@ import Cocoa
 import PahkatClient
 
 class D: PackageTransactionDelegate {
-    func transactionDidEvent(_ id: UInt32, packageKey: PackageKey, event: PackageTransactionEvent) {
-        print("event: \(id) \(packageKey) \(event)")
+    func transactionWillInstall(_ id: UInt32, packageKey: PackageKey) {
+        
     }
     
-    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32) {
-        print("unknown event: \(id) \(packageKey)")
+    func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey) {
+        
+    }
+    
+    func transactionDidError(_ id: UInt32, packageKey: PackageKey?, error: Error?) {
+        
     }
     
     func transactionDidComplete(_ id: UInt32) {
-        print("complete: \(id)")
+        
     }
     
-    func transactionDidError(_ id: UInt32, error: Error) {
-        print("error: \(id) \(error)")
+    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32) {
+        
     }
 }
 

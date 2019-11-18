@@ -125,7 +125,7 @@ public class PackageTransaction<T: Codable> {
         do {
             try assertNoError()
         } catch {
-            delegate.transactionDidError(id, error: error)
+            delegate.transactionDidError(id, packageKey: nil, error: error)
         }
         
         delegate.transactionDidComplete(id)
@@ -156,7 +156,7 @@ public protocol PackageTransactionDelegate: class {
     func transactionWillInstall(_ id: UInt32, packageKey: PackageKey)
     func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey)
     func transactionDidComplete(_ id: UInt32)
-    func transactionDidError(_ id: UInt32) // , error: Error)
+    func transactionDidError(_ id: UInt32, packageKey: PackageKey?, error: Error?)
     func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32)
 }
 
@@ -183,7 +183,7 @@ internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<In
     case .uninstalling:
         delegate.transactionWillUninstall(tag, packageKey: packageKey)
     case .error:
-        delegate.transactionDidError(tag)
+        delegate.transactionDidError(tag, packageKey: packageKey, error: nil)
         transactionProcessCallbacks.removeValue(forKey: tag)
     case .completed:
         delegate.transactionDidComplete(tag)
