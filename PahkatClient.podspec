@@ -10,7 +10,8 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'Apache-2.0 OR MIT' }
   s.author           = { 'Brendan Molloy' => 'brendan@bbqsrc.net' }
   s.source           = { :git => 'https://github.com/divvun/pahkat-client-sdk-swift', :tag => s.version.to_s }
-
+  
+  s.static_framework = true
   s.macos.deployment_target = '10.10'
   s.ios.deployment_target = '9.0'
   s.user_target_xcconfig = {
