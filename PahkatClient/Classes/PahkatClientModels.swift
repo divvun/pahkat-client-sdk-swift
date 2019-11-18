@@ -347,6 +347,15 @@ public enum InstallerTarget: Codable {
         }
     }
     
+    public var stringValue: String {
+        switch self {
+        case .system:
+            return "system"
+        case .user:
+            return "user"
+        }
+    }
+    
     public static func from(rawValue: String) -> InstallerTarget? {
         switch rawValue {
         case "system":

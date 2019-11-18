@@ -72,11 +72,12 @@ public class MacOSPackageStore {
         return repos
     }
     
-    public func allStatuses(repo: RepoRecord) throws -> [String: PackageStatusResponse] {
+    public func allStatuses(repo: RepoRecord, target: InstallerTarget) throws -> [String: PackageStatusResponse] {
         let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!
         
         let statusesCStr = repoRecordStr.withCString { cStr in
-            pahkat_macos_package_store_all_statuses(handle, cStr, pahkat_client_err_callback)
+            target.stringValue.withCString { targetCStr in             pahkat_macos_package_store_all_statuses(handle, cStr, targetCStr, pahkat_client_err_callback)
+            }
         }
         try assertNoError()
         defer { pahkat_str_free(statusesCStr) }

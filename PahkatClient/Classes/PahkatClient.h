@@ -35,11 +35,6 @@ typedef char rust_path_t;
 
 // MARK: Pahkat structs
 
-typedef struct package_status_s {
-    rust_bool_t is_system;
-    int8_t status;
-} package_status_t;
-
 typedef char json_str_t;
 
 // MARK: Prefix functions
@@ -50,8 +45,10 @@ pahkat_prefix_package_store_create(const rust_path_t *_Nonnull path, ERR_CALLBAC
 extern void *_Nullable
 pahkat_prefix_package_store_open(const rust_path_t *_Nonnull path, ERR_CALLBACK);
 
-extern package_status_t
-pahkat_prefix_package_store_status(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
+extern int8_t
+pahkat_prefix_package_store_status(const void *_Nonnull handle,
+                                   const char *_Nonnull package_key,
+                                   ERR_CALLBACK);
 
 extern json_str_t *_Nullable
 pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
@@ -101,13 +98,17 @@ pahkat_macos_package_store_new(const rust_path_t *_Nonnull path, ERR_CALLBACK);
 extern void *_Nullable
 pahkat_macos_package_store_load(const rust_path_t *_Nonnull path, ERR_CALLBACK);
 
-extern package_status_t
-pahkat_macos_package_store_status(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
+extern int8_t
+pahkat_macos_package_store_status(const void *_Nonnull handle,
+                                  const char *_Nonnull package_key,
+                                  const json_str_t *_Nonnull target,
+                                  ERR_CALLBACK);
 
 extern json_str_t *_Nullable
 pahkat_macos_package_store_all_statuses(const void *_Nonnull handle,
-                                         const json_str_t *_Nonnull repo_record,
-                                         ERR_CALLBACK);
+                                        const json_str_t *_Nonnull repo_record,
+                                        const json_str_t *_Nonnull target,
+                                        ERR_CALLBACK);
 
 extern rust_path_t *_Nullable
 pahkat_macos_package_store_download(const void *_Nonnull handle,
