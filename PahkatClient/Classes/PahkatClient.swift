@@ -18,20 +18,6 @@ internal func assertNoError() throws {
     }
 }
 
-public struct RepoConfig: Codable, Equatable {
-    public let url: URL
-    public let channel: Repository.Channels
-    
-    public static func ==(lhs: RepoConfig, rhs: RepoConfig) -> Bool {
-        return lhs.url == rhs.url && lhs.channel == rhs.channel
-    }
-    
-    public init(url: URL, channel: Repository.Channels) {
-        self.url = url
-        self.channel = channel
-    }
-}
-
 public class StoreConfig {
     private let handle: UnsafeRawPointer
     
@@ -68,7 +54,7 @@ public class StoreConfig {
         }
     }
     
-    public func repos() throws -> [RepoConfig] {
+    public func repos() throws -> [RepoRecord] {
         let cStr = pahkat_store_config_repos(handle, pahkat_client_err_callback)
         try assertNoError()
         
@@ -76,10 +62,10 @@ public class StoreConfig {
         let data = String(cString: cStr!).data(using: .utf8)!
         
 //        log.debug("Decode repos")
-        return try! JSONDecoder().decode([RepoConfig].self, from: data)
+        return try! JSONDecoder().decode([RepoRecord].self, from: data)
     }
     
-    public func set(repos: [RepoConfig]) throws {
+    public func set(repos: [RepoRecord]) throws {
         let json = try! JSONEncoder().encode(repos)
         String(data: json, encoding: .utf8)!.withCString { cStr in
             pahkat_store_config_set_repos(handle, cStr, pahkat_client_err_callback)
