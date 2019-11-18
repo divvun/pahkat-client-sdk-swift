@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
-      :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core && ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix && rm ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}/*.dylib",
+      :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core && ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix",
       :shell_path => "/bin/sh"
     }
   ]
