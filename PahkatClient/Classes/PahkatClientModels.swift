@@ -398,22 +398,45 @@ extension PackageInstallStatus {
     public func isError() -> Bool {
         return self.rawValue < 0
     }
+    
+    public var description: String {
+        switch self {
+        case .notInstalled:
+            return Strings.notInstalled
+        case .upToDate:
+            return Strings.installed
+        case .requiresUpdate:
+            return Strings.updateAvailable
+        case .versionSkipped:
+            return Strings.versionSkipped
+        case .noPackage:
+            return Strings.errorUnknownPackage
+        case .noInstaller:
+            return Strings.errorNoInstaller
+        case .wrongInstallerType:
+            // TODO: localise
+            return Strings.errorNoInstaller
+        case .parsingVersion:
+            return Strings.errorInvalidVersion
+        case .invalidInstallPath:
+            // TODO: localise
+            return Strings.errorNoInstaller
+        case .invalidMetadata:
+            // TODO: localise
+            return Strings.errorNoInstaller
+        }
+    }
 }
 
-public struct PackageStatusResponse : Codable {
+public struct PackageStatusResponse: Codable {
     public let status: PackageInstallStatus
     public let target: InstallerTarget
 }
 
-//public struct PackageRecord : Equatable, Hashable, Codable {
-//    public let id: PackageKey
-//    public let package: Package
-//}
-
-public struct PackageKey : Codable, Hashable, Comparable {
-    let url: String
-    let id: String
-    let channel: String
+public struct PackageKey: Codable, Hashable, Comparable {
+    public let url: String
+    public let id: String
+    public let channel: String
     
     public init(from decoder: Decoder) throws {
         let string = try decoder.singleValueContainer().decode(String.self)
@@ -615,7 +638,7 @@ extension Package {
     }
     
     public var nativeName: String {
-        for code in Locale.autoupdatingCurrent.derivedIdentifiers {
+        for code in Locale(identifier: Strings.languageCode).derivedIdentifiers {
             if let name = self.name[code] {
                 return name
             }
@@ -645,62 +668,9 @@ extension Package {
     }
 }
 
-// TODO: generate from CLDR data
-fileprivate let localeTree = [
-    "en-001": ["en-001","en"],
-    "en": ["en"],
-    "nb": ["nb"],
-    "nn-Runr": ["nn-Runr","nn"],
-    "nn": ["nn"],
-    "se": ["se"]
-]
-
-extension Locale {
-    public var derivedIdentifiers: [String] {
-        let x = self
-        var opts: [String] = []
-        
-        if let lang = x.languageCode {
-            if let script = x.scriptCode, let region = x.regionCode {
-                let c = "\(lang)-\(script)-\(region)"
-                opts.append(c)
-                if let x = localeTree[c] {
-                    opts.append(contentsOf: x)
-                    return opts
-                }
-            }
-            
-            if let script = x.scriptCode {
-                let c = "\(lang)-\(script)"
-                opts.append(c)
-                if let x = localeTree[c] {
-                    opts.append(contentsOf: x)
-                    return opts
-                }
-            }
-            
-            if let region = x.regionCode {
-                let c = "\(lang)-\(region)"
-                opts.append(c)
-                if let x = localeTree[c] {
-                    opts.append(contentsOf: x)
-                    return opts
-                }
-            }
-            
-            opts.append(lang)
-            if let x = localeTree[lang] {
-                opts.append(contentsOf: x)
-            }
-        }
-        
-        return opts
-    }
-}
-
 extension Repository {
     public var nativeName: String {
-        for code in Locale.autoupdatingCurrent.derivedIdentifiers {
+        for code in Locale(identifier: Strings.languageCode).derivedIdentifiers {
             if let name = self.name[code] {
                 return name
             }
@@ -710,7 +680,7 @@ extension Repository {
     }
     
     public func nativeCategory(for key: String) -> String {
-        for code in Locale.autoupdatingCurrent.derivedIdentifiers {
+        for code in Locale(identifier: Strings.languageCode).derivedIdentifiers {
             guard let map = self.categories[code] else {
                 continue
             }
