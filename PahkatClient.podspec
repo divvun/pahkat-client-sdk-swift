@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.macos.deployment_target = '10.10'
   s.ios.deployment_target = '9.0'
-  s.user_target_xcconfig = {
+  s.pod_target_xcconfig = {
     'OTHER_LDFLAGS': '-lpahkat_client'
   }
   s.pod_target_xcconfig = {
