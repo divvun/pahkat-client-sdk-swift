@@ -1,13 +1,13 @@
 #if TARGET_OS_OSX
 import Foundation
 
-class MacOSPackageStore {
-    static func `default`() -> MacOSPackageStore {
+public class MacOSPackageStore {
+    static public func `default`() -> MacOSPackageStore {
         let handle = pahkat_macos_package_store_default()
         return MacOSPackageStore(handle: handle)
     }
     
-    static func create(path: String) throws -> MacOSPackageStore {
+    static public func create(path: String) throws -> MacOSPackageStore {
         let handle = path.withCString {
             pahkat_macos_package_store_new($0, pahkat_client_err_callback)
         }
@@ -15,7 +15,7 @@ class MacOSPackageStore {
         return MacOSPackageStore(handle: handle!)
     }
     
-    static func load(path: String) throws -> MacOSPackageStore {
+    static public func load(path: String) throws -> MacOSPackageStore {
         let handle = path.withCString {
             pahkat_macos_package_store_load($0, pahkat_client_err_callback)
         }
@@ -29,30 +29,30 @@ class MacOSPackageStore {
         self.handle = handle
     }
     
-    func download() {
+    public func download() {
         
     }
     
-    func resolvePackage() {
+    public func resolvePackage() {
         
     }
     
-    func clearCache() throws {
+    public func clearCache() throws {
         pahkat_macos_package_store_clear_cache(handle, pahkat_client_err_callback)
         try assertNoError()
     }
     
-    func refreshRepos() throws {
+    public func refreshRepos() throws {
         pahkat_macos_package_store_refresh_repos(handle, pahkat_client_err_callback)
         try assertNoError()
     }
     
-    func forceRefreshRepos() throws {
+    public func forceRefreshRepos() throws {
         pahkat_macos_package_store_force_refresh_repos(handle, pahkat_client_err_callback)
         try assertNoError()
     }
     
-    func repoIndexes() throws -> [RepositoryIndex] {
+    public func repoIndexes() throws -> [RepositoryIndex] {
         let repoIndexsCStr = pahkat_macos_package_store_repo_indexes(handle, pahkat_client_err_callback)
         try assertNoError()
         defer { pahkat_str_free(repoIndexsCStr) }
