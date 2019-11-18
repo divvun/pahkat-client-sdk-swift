@@ -23,10 +23,10 @@ Pod::Spec.new do |s|
     'DEFINES_MODULE' => 'YES'
   }
   s.macos.user_target_xcconfig = {
-    'LIBRARY_SEARCH_PATHS': '"${PODS_CONFIGURATION_BUILD_DIR}/PahkatClient/pahkat-client-core/target/${CONFIGURATION}"'
+    'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat-client-core/target/${CONFIGURATION}"'
   }
   s.ios.user_target_xcconfig = {
-    'LIBRARY_SEARCH_PATHS': '"${PODS_CONFIGURATION_BUILD_DIR}/PahkatClient/pahkat-client-core/target/universal/${CONFIGURATION}"'
+    'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat-client-core/target/universal/${CONFIGURATION}"'
   }
   s.ios.script_phases = [
     {
