@@ -22,6 +22,12 @@ Pod::Spec.new do |s|
     'LZMA_API_STATIC': '1',
     'DEFINES_MODULE' => 'YES'
   }
+  s.macos.pod_target_xcconfig = {
+    'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/PahkatClient/pahkat-client-core/target/${CONFIGURATION}"'
+  }
+  s.ios.pod_target_xcconfig = {
+    'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/PahkatClient/pahkat-client-core/target/universal/${CONFIGURATION}"'
+  }
   s.macos.user_target_xcconfig = {
     'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat-client-core/target/${CONFIGURATION}"'
   }
@@ -47,4 +53,5 @@ Pod::Spec.new do |s|
   s.preserve_paths = "pahkat-client-core"
   s.source_files = 'PahkatClient/Classes/**/*'
   s.public_header_files = 'PahkatClient/Classes/**/*.h'
+  s.macos.vendored_libraries = 'pahkat-client-core/target/${CONFIGURATION}/libpahkat_client.a'
 end
