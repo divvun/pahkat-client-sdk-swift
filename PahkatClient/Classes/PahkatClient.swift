@@ -91,8 +91,8 @@ public class StoreConfig {
 }
 
 public struct RepoRecord: Codable, Equatable, Hashable {
-    let url: URL
-    let channel: Repository.Channels
+    public let url: URL
+    public let channel: Repository.Channels
     
     public init(url: URL, channel: Repository.Channels) {
         self.url = url
