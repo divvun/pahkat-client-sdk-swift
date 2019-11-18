@@ -145,7 +145,7 @@ public class PrefixPackageStore: NSObject {
         }
     }
     
-    public func transaction(actions: [TransactionAction<Empty>]) throws -> PackageTransaction {
+    public func transaction(actions: [TransactionAction<Empty>]) throws -> PackageTransaction<Empty> {
         print("Encoding: \(actions)")
         let jsonActions = try JSONEncoder().encode(actions)
         print("Encoded: \(jsonActions)")
@@ -153,7 +153,7 @@ public class PrefixPackageStore: NSObject {
             pahkat_prefix_transaction_new(handle, cStr, pahkat_client_err_callback)
         }
         try assertNoError()
-        return PackageTransaction(handle: ptr!)
+        return PackageTransaction(handle: ptr!, actions: actions)
     }
 }
 

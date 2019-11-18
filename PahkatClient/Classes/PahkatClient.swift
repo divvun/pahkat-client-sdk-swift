@@ -100,19 +100,21 @@ public struct RepoRecord: Codable, Equatable, Hashable {
     }
 }
 
-public class PackageTransaction {
-    private static var nextId: UInt32 = 1
-    
+private var nextPackageTransactionId: UInt32 = 1
+
+public class PackageTransaction<T: Codable> {
     private let handle: UnsafeRawPointer
+    private let actions: [TransactionAction<T>]
     
-    init(handle: UnsafeRawPointer) {
+    init(handle: UnsafeRawPointer, actions: [TransactionAction<T>]) {
         self.handle = handle
+        self.actions = actions
     }
     
     public func process(delegate: PackageTransactionDelegate) {
-        defer { PackageTransaction.nextId += 1 }
+        defer { nextPackageTransactionId += 1 }
         
-        let id = PackageTransaction.nextId
+        let id = nextPackageTransactionId
         transactionProcessCallbacks[id] = delegate
         defer {
             transactionProcessCallbacks.removeValue(forKey: id)

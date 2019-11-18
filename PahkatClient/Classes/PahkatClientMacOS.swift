@@ -92,7 +92,7 @@ public class MacOSPackageStore {
         }
     }
     
-    public func transaction(actions: [TransactionAction<InstallerTarget>]) throws -> PackageTransaction {
+    public func transaction(actions: [TransactionAction<InstallerTarget>]) throws -> PackageTransaction<InstallerTarget> {
         print("Encoding: \(actions)")
         let jsonActions = try JSONEncoder().encode(actions)
         print("Encoded: \(jsonActions)")
@@ -100,7 +100,7 @@ public class MacOSPackageStore {
             pahkat_macos_transaction_new(handle, cStr, pahkat_client_err_callback)
         }
         try assertNoError()
-        return PackageTransaction(handle: ptr!)
+        return PackageTransaction(handle: ptr!, actions: actions)
     }
     
     deinit {
