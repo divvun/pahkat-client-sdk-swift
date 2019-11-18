@@ -396,10 +396,10 @@ public struct PackageStatusResponse : Codable {
     public let target: InstallerTarget
 }
 
-public struct PackageRecord : Equatable, Hashable, Codable {
-    public let id: PackageKey
-    public let package: Package
-}
+//public struct PackageRecord : Equatable, Hashable, Codable {
+//    public let id: PackageKey
+//    public let package: Package
+//}
 
 public struct PackageKey : Codable, Hashable, Comparable {
     let url: String
@@ -615,7 +615,7 @@ extension Package {
         return self.name["en"] ?? ""
     }
 
-#if TARGET_OS_OSX
+#if os(macOS)
     public var macOSInstaller: MacOsInstaller? {
         switch installer {
         case .macOsInstaller(let x):

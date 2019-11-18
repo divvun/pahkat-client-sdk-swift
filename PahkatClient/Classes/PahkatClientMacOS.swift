@@ -1,4 +1,4 @@
-#if TARGET_OS_OSX
+#if os(macOS)
 import Foundation
 
 public class MacOSPackageStore {
@@ -27,6 +27,12 @@ public class MacOSPackageStore {
     
     private init(handle: UnsafeRawPointer) {
         self.handle = handle
+    }
+    
+    public func config() throws -> StoreConfig {
+        let ptr = pahkat_macos_package_store_config(handle, pahkat_client_err_callback)
+        try assertNoError()
+        return StoreConfig(handle: ptr!)
     }
     
     public func download() {
@@ -64,6 +70,36 @@ public class MacOSPackageStore {
         
         let repos = try jsonDecoder.decode([RepositoryIndex].self, from: reposJson)
         return repos
+    }
+    
+    public func allStatuses(repo: RepoRecord) throws -> [String: PackageStatusResponse] {
+        let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!
+        
+        let statusesCStr = repoRecordStr.withCString { cStr in
+            pahkat_macos_package_store_all_statuses(handle, cStr, pahkat_client_err_callback)
+        }
+        try assertNoError()
+        defer { pahkat_str_free(statusesCStr) }
+        
+        let statusesData = String(cString: statusesCStr!).data(using: .utf8)!
+        let statuses = try JSONDecoder().decode(
+            [String: PackageInstallStatus].self,
+            from: statusesData)
+        
+        return statuses.mapValues { status in
+            PackageStatusResponse(status: status, target: InstallerTarget.system)
+        }
+    }
+    
+    public func transaction(actions: [TransactionAction<InstallerTarget>]) throws -> PackageTransaction {
+        print("Encoding: \(actions)")
+        let jsonActions = try JSONEncoder().encode(actions)
+        print("Encoded: \(jsonActions)")
+        let ptr = String(data: jsonActions, encoding: .utf8)!.withCString { cStr in
+            pahkat_macos_transaction_new(handle, cStr, pahkat_client_err_callback)
+        }
+        try assertNoError()
+        return PackageTransaction(handle: ptr!)
     }
     
     deinit {

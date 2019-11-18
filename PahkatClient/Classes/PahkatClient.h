@@ -53,6 +53,10 @@ pahkat_prefix_package_store_open(const rust_path_t *_Nonnull path, ERR_CALLBACK)
 extern package_status_t
 pahkat_prefix_package_store_status(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
 
+extern json_str_t *_Nullable
+pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
+                                         const json_str_t *_Nonnull repo_record,
+                                         ERR_CALLBACK);
 extern const rust_path_t *_Nullable
 pahkat_prefix_package_store_import(const void *_Nonnull handle, const char *_Nonnull package_key, const rust_path_t *_Nonnull installer_path, ERR_CALLBACK);
 
@@ -85,31 +89,6 @@ pahkat_prefix_transaction_process(const void *_Nonnull handle,
                                  uint32_t tag,
                                  void (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
                                  ERR_CALLBACK);
-// Should be using NSURLSession for this
-//
-//extern const rust_path_t *_Nullable
-//pahkat_prefix_package_store_download(
-//     const void *_Nonnull handle,
-//     const char *_Nonnull package_key,
-//     void (*_Nonnull progress)(const void *_Nonnull, uint64_t, uint64_t),
-//     ERR_CALLBACK
-// );
-
-// pahkat_prefix_package_store_clear_cache
-// pahkat_prefix_package_store_refresh_repos
-// pahkat_prefix_package_store_force_refresh_repos
-// pahkat_prefix_package_store_repo_indexes
-// pahkat_prefix_package_store_config
-
-// pahkat_prefix_transaction_new
-// pahkat_prefix_transaction_actions
-// pahkat_prefix_transaction_process
-
-// pahkat_store_config_set_ui_value
-// pahkat_store_config_ui_value
-// pahkat_store_config_skipped_package
-// pahkat_store_config_repos
-// pahkat_store_config_set_repos
 
 // MARK: macOS functions
 
@@ -126,7 +105,7 @@ extern package_status_t
 pahkat_macos_package_store_status(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
 
 extern json_str_t *_Nullable
-pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
+pahkat_macos_package_store_all_statuses(const void *_Nonnull handle,
                                          const json_str_t *_Nonnull repo_record,
                                          ERR_CALLBACK);
 

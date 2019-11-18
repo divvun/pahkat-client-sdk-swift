@@ -1,15 +1,5 @@
 import Foundation
 
-public struct RepoRecord: Codable, Equatable, Hashable {
-    let url: URL
-    let channel: Repository.Channels
-    
-    public init(url: URL, channel: Repository.Channels) {
-        self.url = url
-        self.channel = channel
-    }
-}
-
 public class PrefixPackageStore: NSObject {
     private let handle: UnsafeRawPointer
     
@@ -39,7 +29,7 @@ public class PrefixPackageStore: NSObject {
         let bundle = Bundle.main.bundleIdentifier ?? "app"
         let config = URLSessionConfiguration.default
         
-#if TARGET_OS_IPHONE
+#if os(iOS)
         let config = URLSessionConfiguration.background(withIdentifier: "\(bundle).PahkatClient")
         config.waitsForConnectivity = true
         config.isDiscretionary = true
@@ -166,81 +156,6 @@ public class PrefixPackageStore: NSObject {
         return PackageTransaction(handle: ptr!)
     }
 }
-
-public struct Empty: Codable, Equatable, Hashable {
-    public static let instance = Empty()
-    private init() {}
-    public init(from decoder: Decoder) throws {
-        self = Empty.instance
-    }
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encodeNil()
-    }
-}
-
-public enum PackageTransactionEvent: UInt32, Codable {
-    case notStarted = 0
-    case uninstalling = 1
-    case installing = 2
-    case completed = 3
-    case error = 4
-}
-
-public protocol PackageTransactionDelegate: class {
-    func transactionDidEvent(_ id: UInt32, packageKey: PackageKey, event: PackageTransactionEvent)
-    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32)
-    func transactionDidComplete(_ id: UInt32)
-    func transactionDidError(_ id: UInt32, error: Error)
-}
-
-private var transactionProcessCallbacks = [UInt32: PackageTransactionDelegate]()
-
-private let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<Int8>, UInt32) -> Void = { tag, cPackageKey, cEvent in
-    
-    guard let delegate = transactionProcessCallbacks[tag] else {
-        return
-    }
-    
-    let packageKey = PackageKey(from: URL(string: String(cString: cPackageKey))!)
-    guard let event = PackageTransactionEvent(rawValue: cEvent) else {
-        delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)
-        return
-    }
-    
-    delegate.transactionDidEvent(tag, packageKey: packageKey, event: event)
-}
-
-public class PackageTransaction {
-    private static var nextId: UInt32 = 1
-    
-    private let handle: UnsafeRawPointer
-    
-    init(handle: UnsafeRawPointer) {
-        self.handle = handle
-    }
-    
-    public func process(delegate: PackageTransactionDelegate) {
-        defer { PackageTransaction.nextId += 1 }
-        
-        let id = PackageTransaction.nextId
-        transactionProcessCallbacks[id] = delegate
-        defer {
-            transactionProcessCallbacks.removeValue(forKey: id)
-        }
-        
-        pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
-        
-        do {
-            try assertNoError()
-        } catch {
-            delegate.transactionDidError(id, error: error)
-        }
-        
-        delegate.transactionDidComplete(id)
-    }
-}
-
 
 #if TARGET_OS_IPHONE
 extension PrefixPackageStore: URLSessionDelegate {
