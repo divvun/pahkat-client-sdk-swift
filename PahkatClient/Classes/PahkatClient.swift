@@ -104,7 +104,7 @@ private var nextPackageTransactionId: UInt32 = 1
 
 public class PackageTransaction<T: Codable> {
     private let handle: UnsafeRawPointer
-    private let actions: [TransactionAction<T>]
+    public let actions: [TransactionAction<T>]
     
     init(handle: UnsafeRawPointer, actions: [TransactionAction<T>]) {
         self.handle = handle
@@ -153,10 +153,11 @@ public enum PackageTransactionEvent: UInt32, Codable {
 }
 
 public protocol PackageTransactionDelegate: class {
-    func transactionDidEvent(_ id: UInt32, packageKey: PackageKey, event: PackageTransactionEvent)
-    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32)
+    func transactionWillInstall(_ id: UInt32, packageKey: PackageKey)
+    func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey)
     func transactionDidComplete(_ id: UInt32)
-    func transactionDidError(_ id: UInt32, error: Error)
+    func transactionDidError(_ id: UInt32) // , error: Error)
+    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32)
 }
 
 internal var transactionProcessCallbacks = [UInt32: PackageTransactionDelegate]()
@@ -164,14 +165,54 @@ internal var transactionProcessCallbacks = [UInt32: PackageTransactionDelegate](
 internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<Int8>, UInt32) -> Void = { tag, cPackageKey, cEvent in
     
     guard let delegate = transactionProcessCallbacks[tag] else {
+        // TODO: log
         return
     }
     
     let packageKey = PackageKey(from: URL(string: String(cString: cPackageKey))!)
+    
+    
     guard let event = PackageTransactionEvent(rawValue: cEvent) else {
         delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)
         return
     }
     
-    delegate.transactionDidEvent(tag, packageKey: packageKey, event: event)
+    switch event {
+    case .installing:
+        delegate.transactionWillInstall(tag, packageKey: packageKey)
+    case .uninstalling:
+        delegate.transactionWillUninstall(tag, packageKey: packageKey)
+    case .error:
+        delegate.transactionDidError(tag)
+        transactionProcessCallbacks.removeValue(forKey: tag)
+    case .completed:
+        delegate.transactionDidComplete(tag)
+        transactionProcessCallbacks.removeValue(forKey: tag)
+    case .notStarted:
+        return
+    }
+}
+
+public protocol PackageDownloadDelegate: class {
+    var isDownloadCancelled: Bool { get }
+    
+    func downloadDidProgress(_ packageKey: PackageKey, current: UInt64, maximum: UInt64)
+    func downloadDidComplete(_ packageKey: PackageKey, path: String)
+    func downloadDidCancel(_ packageKey: PackageKey)
+    func downloadDidError(_ packageKey: PackageKey, error: Error)
+}
+
+internal var downloadProcessCallbacks = [PackageKey: PackageDownloadDelegate]()
+
+internal let downloadProcessHandler: @convention(c) (UnsafePointer<CChar>, UInt64, UInt64) -> UInt8 = { cPackageKey, current, maximum in
+    
+    let packageKey = PackageKey(from: URL(string: String(cString: cPackageKey))!)
+    
+    guard let delegate = downloadProcessCallbacks[packageKey] else {
+        // TODO: log
+        return 0
+    }
+
+    delegate.downloadDidProgress(packageKey, current: current, maximum: maximum)
+    return delegate.isDownloadCancelled ? 0 : 1
 }

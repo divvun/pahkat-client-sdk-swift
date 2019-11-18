@@ -113,7 +113,7 @@ pahkat_macos_package_store_all_statuses(const void *_Nonnull handle,
 extern rust_path_t *_Nullable
 pahkat_macos_package_store_download(const void *_Nonnull handle,
                                     const char *_Nonnull package_key,
-                                    void (*_Nonnull progress)(const void *_Nonnull, uint64_t, uint64_t),
+                                    rust_bool_t (*_Nonnull progress)(const char *_Nonnull, uint64_t, uint64_t),
                                     ERR_CALLBACK);
 
 extern void pahkat_macos_package_store_clear_cache(const void *_Nonnull handle, ERR_CALLBACK);

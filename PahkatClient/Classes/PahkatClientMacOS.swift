@@ -35,8 +35,33 @@ public class MacOSPackageStore {
         return StoreConfig(handle: ptr!)
     }
     
-    public func download() {
+    public func download(packageKey: PackageKey, delegate: PackageDownloadDelegate) {
+        downloadProcessCallbacks[packageKey] = delegate
         
+        DispatchQueue.global(qos: .userInitiated).async {
+            let cPath = packageKey.rawValue.withCString { cPackageKey in
+                pahkat_macos_package_store_download(self.handle, cPackageKey, downloadProcessHandler, pahkat_client_err_callback)
+            }
+            
+            if delegate.isDownloadCancelled {
+                delegate.downloadDidCancel(packageKey)
+                downloadProcessCallbacks.removeValue(forKey: packageKey)
+                return
+            }
+            
+            do {
+                try assertNoError()
+            } catch {
+                delegate.downloadDidError(packageKey, error: error)
+                downloadProcessCallbacks.removeValue(forKey: packageKey)
+                return
+            }
+            
+            // TODO: free cPath
+            let path = String(cString: cPath!)
+            delegate.downloadDidComplete(packageKey, path: path)
+            downloadProcessCallbacks.removeValue(forKey: packageKey)
+        }
     }
     
     public func resolvePackage() {

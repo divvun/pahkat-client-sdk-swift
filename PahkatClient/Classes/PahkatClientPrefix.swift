@@ -157,7 +157,7 @@ public class PrefixPackageStore: NSObject {
     }
 }
 
-#if TARGET_OS_IPHONE
+#if os(iOS)
 extension PrefixPackageStore: URLSessionDelegate {
     @available(iOS 9.0, *)
     public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
