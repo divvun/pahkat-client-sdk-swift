@@ -10,6 +10,13 @@ public struct PahkatClientError: Error {
     }
 }
 
+extension PahkatClientError: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        let msg = "PahkatClientError: \(message)\n  Stacktrace:\n"
+        return msg + stack.joined(separator: "\n")
+    }
+}
+
 private var pahkat_client_err: PahkatClientError? = nil
 
 internal let pahkat_client_err_callback: @convention(c) (UnsafePointer<Int8>) -> Void = { cStr in
