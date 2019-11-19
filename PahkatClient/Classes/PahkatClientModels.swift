@@ -438,6 +438,8 @@ public struct PackageKey: Codable, Hashable, Comparable {
     public let id: String
     public let channel: String
     
+    public let rawValue: String
+    
     public init(from decoder: Decoder) throws {
         let string = try decoder.singleValueContainer().decode(String.self)
         self.init(from: URL(string: string)!)
@@ -455,8 +457,6 @@ public struct PackageKey: Codable, Hashable, Comparable {
     public static func == (lhs: PackageKey, rhs: PackageKey) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
-    
-    let rawValue: String
     
     public init(from url: URL) {
         // TODO: make this less dirty by only selecting the pieces of the URL we want

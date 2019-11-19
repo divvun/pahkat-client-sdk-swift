@@ -10,7 +10,9 @@ import Cocoa
 import PahkatClient
 
 class D: PackageTransactionDelegate {
-    var isTransactionCancelled: Bool = false
+    func isTransactionCancelled(_ id: UInt32) -> Bool {
+        return false
+    }
     
     func transactionWillInstall(_ id: UInt32, packageKey: PackageKey) {
         

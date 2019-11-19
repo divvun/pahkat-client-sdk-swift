@@ -153,7 +153,7 @@ public enum PackageTransactionEvent: UInt32, Codable {
 }
 
 public protocol PackageTransactionDelegate: class {
-    var isTransactionCancelled: Bool { get }
+    func isTransactionCancelled(_ id: UInt32) -> Bool
     
     func transactionWillInstall(_ id: UInt32, packageKey: PackageKey)
     func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey)
@@ -174,7 +174,7 @@ internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<In
     
     guard let event = PackageTransactionEvent(rawValue: cEvent) else {
         delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)
-        return delegate.isTransactionCancelled ? 0 : 1
+        return delegate.isTransactionCancelled(tag) ? 0 : 1
     }
     
     switch event {
@@ -192,7 +192,7 @@ internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<In
         break
     }
     
-    return delegate.isTransactionCancelled ? 0 : 1
+    return delegate.isTransactionCancelled(tag) ? 0 : 1
 }
 
 public protocol PackageDownloadDelegate: class {
