@@ -25,6 +25,13 @@ public class StoreConfig {
         self.handle = handle
     }
     
+    public func configPath() throws -> String {
+        let cStr = pahkat_store_config_config_path(handle, pahkat_client_err_callback)
+        try assertNoError()
+        defer { pahkat_str_free(cStr) }
+        return String(cString: cStr!)
+    }
+    
     public func set(uiSetting key: String, value: String?) throws {
         key.withCString { key in
             if let value = value {

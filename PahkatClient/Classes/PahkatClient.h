@@ -147,6 +147,9 @@ pahkat_macos_transaction_process(const void *_Nonnull handle,
 
 // MARK: Store config functions
 
+extern const char *_Nullable
+pahkat_store_config_config_path(const void *_Nonnull handle, ERR_CALLBACK);
+
 extern void
 pahkat_store_config_set_ui_value(const void *_Nonnull handle, const char *_Nonnull key, const char *_Nullable value, ERR_CALLBACK);
 
