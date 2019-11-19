@@ -80,19 +80,28 @@ public class StoreConfig {
         try assertNoError()
     }
     
-    public func set(cacheBasePath: String) throws {
-        cacheBasePath.withCString { cStr in
+    public func setCacheBase(url: URL) throws {
+        url.absoluteString.withCString { cStr in
             pahkat_store_config_set_cache_base_url(handle, cStr, pahkat_client_err_callback)
         }
         try assertNoError()
     }
+    
+    public func setCacheBase(path: String) throws {
+        let url = URL(fileURLWithPath: path)
+        return try setCacheBase(url: url)
+    }
 
-    public func cacheBasePath() throws -> String {
+    public func cacheBaseURL() throws -> URL {
         let cStr = pahkat_store_config_cache_base_url(handle, pahkat_client_err_callback)
         try assertNoError()
         defer { pahkat_str_free(cStr) }
-        let path = String(cString: cStr!)
-        return path
+        
+        // This cannot fail as the Rust contract guarantees a real pointer if no error
+        let urlString = String(cString: cStr!)
+        
+        // This cannot fail because the Rust contract guarantees a URL
+        return URL(string: urlString)!
     }
 }
 
