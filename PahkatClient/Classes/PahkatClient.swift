@@ -80,20 +80,19 @@ public class StoreConfig {
         try assertNoError()
     }
     
-    public func set(cachePath: String) throws {
-        fatalError("unimplemented")
-//        let cStr = cachePath.cString(using: .utf8)!
-//        pahkat_store_config_set_cache_base_path(handle, cStr, pahkat_client_err_callback)
-//        try assertNoError()
+    public func set(cacheBasePath: String) throws {
+        cacheBasePath.withCString { cStr in
+            pahkat_store_config_set_cache_base_url(handle, cStr, pahkat_client_err_callback)
+        }
+        try assertNoError()
     }
 
-    public func cachePath() throws -> String {
-        fatalError("unimplemented")
-//        let cStr = pahkat_store_config_cache_base_path(handle, pahkat_client_err_callback)
-//        try assertNoError()
-//        defer { pahkat_str_free(cStr) }
-//        let path = String(cString: cStr!)
-//        return path
+    public func cacheBasePath() throws -> String {
+        let cStr = pahkat_store_config_cache_base_url(handle, pahkat_client_err_callback)
+        try assertNoError()
+        defer { pahkat_str_free(cStr) }
+        let path = String(cString: cStr!)
+        return path
     }
 }
 

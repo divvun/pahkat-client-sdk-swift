@@ -36,6 +36,7 @@ typedef char rust_path_t;
 // MARK: Pahkat structs
 
 typedef char json_str_t;
+typedef char url_str_t;
 
 // MARK: Prefix functions
 
@@ -87,7 +88,9 @@ pahkat_prefix_transaction_actions(const void *_Nonnull handle, ERR_CALLBACK);
 extern void
 pahkat_prefix_transaction_process(const void *_Nonnull handle,
                                  uint32_t tag,
-                                 rust_bool_t (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
+                                 rust_bool_t (*_Nonnull progress)(uint32_t,
+                                                                  const char *_Nonnull,
+                                                                  uint32_t),
                                  ERR_CALLBACK);
 
 // MARK: macOS functions
@@ -116,7 +119,9 @@ pahkat_macos_package_store_all_statuses(const void *_Nonnull handle,
 extern rust_path_t *_Nullable
 pahkat_macos_package_store_download(const void *_Nonnull handle,
                                     const char *_Nonnull package_key,
-                                    rust_bool_t (*_Nonnull progress)(const char *_Nonnull, uint64_t, uint64_t),
+                                    rust_bool_t (*_Nonnull progress)(const char *_Nonnull,
+                                                                     uint64_t,
+                                                                     uint64_t),
                                     ERR_CALLBACK);
 
 extern void pahkat_macos_package_store_clear_cache(const void *_Nonnull handle, ERR_CALLBACK);
@@ -142,7 +147,9 @@ pahkat_macos_transaction_actions(const void *_Nonnull handle, ERR_CALLBACK);
 extern void
 pahkat_macos_transaction_process(const void *_Nonnull handle,
                                  uint32_t tag,
-                                 rust_bool_t (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
+                                 rust_bool_t (*_Nonnull progress)(uint32_t,
+                                                                  const char *_Nonnull,
+                                                                  uint32_t),
                                  ERR_CALLBACK);
 
 // MARK: Store config functions
@@ -151,25 +158,37 @@ extern const char *_Nullable
 pahkat_store_config_config_path(const void *_Nonnull handle, ERR_CALLBACK);
 
 extern void
-pahkat_store_config_set_ui_value(const void *_Nonnull handle, const char *_Nonnull key, const char *_Nullable value, ERR_CALLBACK);
+pahkat_store_config_set_ui_value(const void *_Nonnull handle,
+                                 const char *_Nonnull key,
+                                 const char *_Nullable value,
+                                 ERR_CALLBACK);
 
 extern const char *_Nullable
-pahkat_store_config_ui_value(const void *_Nonnull handle, const char *_Nonnull key, ERR_CALLBACK);
+pahkat_store_config_ui_value(const void *_Nonnull handle,
+                             const char *_Nonnull key,
+                             ERR_CALLBACK);
 
-//extern void
-//pahkat_store_config_set_cache_base_path(const void *_Nonnull handle, const char *_Nullable path, ERR_CALLBACK);
-//
-//extern const char *_Nullable
-//pahkat_store_config_cache_base_path(const void *_Nonnull handle, ERR_CALLBACK);
+extern void
+pahkat_store_config_set_cache_base_url(const void *_Nonnull handle,
+                                       const url_str_t *_Nullable path,
+                                       ERR_CALLBACK);
+
+extern const url_str_t *_Nullable
+pahkat_store_config_cache_base_url(const void *_Nonnull handle,
+                                   ERR_CALLBACK);
 
 extern const char *_Nullable
-pahkat_store_config_skipped_package(const void *_Nonnull handle, const char *_Nonnull package_key, ERR_CALLBACK);
+pahkat_store_config_skipped_package(const void *_Nonnull handle,
+                                    const char *_Nonnull package_key,
+                                    ERR_CALLBACK);
 
 extern const json_str_t *_Nullable
 pahkat_store_config_repos(const void *_Nonnull handle, ERR_CALLBACK);
 
 extern void
-pahkat_store_config_set_repos(const void *_Nonnull handle, const json_str_t *_Nonnull repos, ERR_CALLBACK);
+pahkat_store_config_set_repos(const void *_Nonnull handle,
+                              const json_str_t *_Nonnull repos,
+                              ERR_CALLBACK);
 
 // MARK: Utility functions
 extern void
