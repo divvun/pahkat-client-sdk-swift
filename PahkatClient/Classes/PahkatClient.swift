@@ -158,6 +158,7 @@ public protocol PackageTransactionDelegate: class {
     func transactionWillInstall(_ id: UInt32, packageKey: PackageKey)
     func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey)
     func transactionDidComplete(_ id: UInt32)
+    func transactionDidCancel(_ id: UInt32)
     func transactionDidError(_ id: UInt32, packageKey: PackageKey?, error: Error?)
     func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32)
 }
@@ -167,6 +168,12 @@ internal var transactionProcessCallbacks = [UInt32: PackageTransactionDelegate](
 internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<Int8>, UInt32) -> UInt8 = { tag, cPackageKey, cEvent in
     guard let delegate = transactionProcessCallbacks[tag] else {
         // TODO: log
+        return 0
+    }
+    
+    if delegate.isTransactionCancelled(tag) {
+        delegate.transactionDidCancel(tag)
+        transactionProcessCallbacks.removeValue(forKey: tag)
         return 0
     }
     

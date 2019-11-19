@@ -30,6 +30,10 @@ class D: PackageTransactionDelegate {
         
     }
     
+    func transactionDidCancel(_ id: UInt32) {
+        
+    }
+    
     func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32) {
         
     }
