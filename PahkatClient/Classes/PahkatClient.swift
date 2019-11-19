@@ -2,6 +2,12 @@ import Foundation
 
 public struct PahkatClientError: Error {
     public let message: String
+    public let stack: [String]
+    
+    init(message: String) {
+        self.message = message
+        stack = Thread.callStackSymbols
+    }
 }
 
 private var pahkat_client_err: PahkatClientError? = nil
