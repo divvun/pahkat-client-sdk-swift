@@ -55,7 +55,10 @@ pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
                                          const json_str_t *_Nonnull repo_record,
                                          ERR_CALLBACK);
 extern const rust_path_t *_Nullable
-pahkat_prefix_package_store_import(const void *_Nonnull handle, const char *_Nonnull package_key, const rust_path_t *_Nonnull installer_path, ERR_CALLBACK);
+pahkat_prefix_package_store_import(const void *_Nonnull handle,
+                                   const char *_Nonnull package_key,
+                                   const rust_path_t *_Nonnull installer_path,
+                                   ERR_CALLBACK);
 
 extern void pahkat_prefix_package_store_clear_cache(const void *_Nonnull handle, ERR_CALLBACK);
 extern void pahkat_prefix_package_store_refresh_repos(const void *_Nonnull handle, ERR_CALLBACK);
@@ -84,7 +87,7 @@ pahkat_prefix_transaction_actions(const void *_Nonnull handle, ERR_CALLBACK);
 extern void
 pahkat_prefix_transaction_process(const void *_Nonnull handle,
                                  uint32_t tag,
-                                 void (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
+                                 rust_bool_t (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
                                  ERR_CALLBACK);
 
 // MARK: macOS functions
@@ -139,7 +142,7 @@ pahkat_macos_transaction_actions(const void *_Nonnull handle, ERR_CALLBACK);
 extern void
 pahkat_macos_transaction_process(const void *_Nonnull handle,
                                  uint32_t tag,
-                                 void (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
+                                 rust_bool_t (*_Nonnull progress)(uint32_t, const char *_Nonnull, uint32_t),
                                  ERR_CALLBACK);
 
 // MARK: Store config functions
