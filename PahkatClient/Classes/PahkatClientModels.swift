@@ -335,7 +335,7 @@ public enum InstallerTarget: Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.intValue)
+        try container.encode(self.stringValue)
     }
     
     public var intValue: Int {
