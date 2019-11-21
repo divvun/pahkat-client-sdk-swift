@@ -39,7 +39,7 @@ public class MacOSPackageStore {
         downloadProcessCallbacks[packageKey] = delegate
         
         DispatchQueue.global(qos: .userInitiated).async {
-            let cPath = packageKey.rawValue.withCString { cPackageKey in
+            let slice = packageKey.rawValue.withCString { cPackageKey in
                 pahkat_macos_package_store_download(self.handle, cPackageKey, downloadProcessHandler, pahkat_client_err_callback)
             }
             
@@ -58,7 +58,7 @@ public class MacOSPackageStore {
             }
             
             // TODO: free cPath
-            let path = String(cString: cPath!)
+            let path = String(bytes: slice, encoding: .utf8)!
             delegate.downloadDidComplete(packageKey, path: path)
             downloadProcessCallbacks.removeValue(forKey: packageKey)
         }
@@ -101,7 +101,8 @@ public class MacOSPackageStore {
         let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!
         
         let statusesCStr = repoRecordStr.withCString { cStr in
-            target.stringValue.withCString { targetCStr in             pahkat_macos_package_store_all_statuses(handle, cStr, targetCStr, pahkat_client_err_callback)
+            target.stringValue.withCString { targetCStr in
+                pahkat_macos_package_store_all_statuses(handle, cStr, targetCStr, pahkat_client_err_callback)
             }
         }
         try assertNoError()

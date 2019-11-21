@@ -63,6 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         do {
             let config = try store.config()
+            print(try config.configPath())
             let url = URL(string: "http://localhost:5000/")!
             try config.set(repos: [RepoRecord(url: url, channel: .stable)])
             try store.forceRefreshRepos()

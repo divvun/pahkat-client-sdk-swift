@@ -86,15 +86,15 @@ public class PrefixPackageStore: NSObject {
     }
     
     func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
-        let cPath = packageKey.rawValue.withCString { cPackageKey in
+        let slice = packageKey.rawValue.withCString { cPackageKey in
             installerPath.withCString { cPath in
                 pahkat_prefix_package_store_import(handle, cPackageKey, cPath, pahkat_client_err_callback)
             }
         }
         try assertNoError()
-        defer { pahkat_str_free(cPath) }
+//        defer { pahkat_str_free(cPath) }
         
-        return String(cString: cPath!)
+        return String(bytes: slice, encoding: .utf8)!
     }
     
     public func clearCache() throws {

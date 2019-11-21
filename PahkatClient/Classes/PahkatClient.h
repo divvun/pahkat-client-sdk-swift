@@ -55,7 +55,7 @@ extern json_str_t *_Nullable
 pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
                                          const json_str_t *_Nonnull repo_record,
                                          ERR_CALLBACK);
-extern const rust_path_t *_Nullable
+extern const rust_slice_t
 pahkat_prefix_package_store_import(const void *_Nonnull handle,
                                    const char *_Nonnull package_key,
                                    const rust_path_t *_Nonnull installer_path,
@@ -116,7 +116,7 @@ pahkat_macos_package_store_all_statuses(const void *_Nonnull handle,
                                         const json_str_t *_Nonnull target,
                                         ERR_CALLBACK);
 
-extern rust_path_t *_Nullable
+extern rust_slice_t
 pahkat_macos_package_store_download(const void *_Nonnull handle,
                                     const char *_Nonnull package_key,
                                     rust_bool_t (*_Nonnull progress)(const char *_Nonnull,
@@ -154,7 +154,7 @@ pahkat_macos_transaction_process(const void *_Nonnull handle,
 
 // MARK: Store config functions
 
-extern const char *_Nullable
+extern rust_slice_t
 pahkat_store_config_config_path(const void *_Nonnull handle, ERR_CALLBACK);
 
 extern void

@@ -10,6 +10,63 @@ public struct PahkatClientError: Error {
     }
 }
 
+public struct SliceIterator: IteratorProtocol {
+    private let slice: rust_slice_t
+    private var current: Int = 0
+    
+    public typealias Element = UInt8
+    
+    public mutating func next() -> UInt8? {
+        if current >= self.slice.len {
+            return nil
+        }
+        
+        let v = self.slice.data!
+            .assumingMemoryBound(to: UInt8.self)
+            .advanced(by: current)
+            .pointee
+        
+        self.current += 1
+        
+        return v
+    }
+    
+    init(_ slice: rust_slice_t) {
+        self.slice = slice
+    }
+}
+
+extension rust_slice_t: Sequence {
+    public typealias Element = UInt8
+    public typealias Iterator = SliceIterator
+    
+    public var underestimatedCount: Int {
+        return Int(self.len)
+    }
+    
+    public func makeIterator() -> SliceIterator {
+        return SliceIterator(self)
+    }
+}
+
+extension rust_slice_t: Collection {
+    public typealias Index = UInt
+    
+    public var startIndex: UInt { return 0 }
+    public var endIndex: UInt { return self.len }
+    
+    public func index(after i: UInt) -> UInt {
+        return i + 1
+    }
+    
+    public subscript(position: UInt) -> UInt8 {
+        return self.data!
+            .assumingMemoryBound(to: UInt8.self)
+            .advanced(by: Int(position))
+            .pointee
+    }
+}
+
 extension PahkatClientError: CustomDebugStringConvertible {
     public var debugDescription: String {
         let msg = "PahkatClientError: \(message)\n  Stacktrace:\n"
@@ -39,10 +96,10 @@ public class StoreConfig {
     }
     
     public func configPath() throws -> String {
-        let cStr = pahkat_store_config_config_path(handle, pahkat_client_err_callback)
+        let slice = pahkat_store_config_config_path(handle, pahkat_client_err_callback)
+        // TODO: free
         try assertNoError()
-        defer { pahkat_str_free(cStr) }
-        return String(cString: cStr!)
+        return String(bytes: slice, encoding: .utf8)!
     }
     
     public func set(uiSetting key: String, value: String?) throws {
