@@ -187,15 +187,31 @@ public struct RepoRecord: Codable, Equatable, Hashable {
 
 private var nextPackageTransactionId: UInt32 = 1
 
+enum RawProcessFunc {
+    case macos
+    case prefix
+    
+    func invoke(handle: UnsafeRawPointer, id: UInt32) {
+        switch self {
+        case .macos:
+            pahkat_macos_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+        case .prefix:
+            pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+        }
+    }
+}
+
 public class PackageTransaction<T: Codable> {
     private let handle: UnsafeRawPointer
     public let actions: [TransactionAction<T>]
+    private let rawProcessFunc: RawProcessFunc
     
-    init(handle: UnsafeRawPointer, actions: [TransactionAction<T>]) {
+    init(handle: UnsafeRawPointer, actions: [TransactionAction<T>], rawProcessFunc: RawProcessFunc) {
         self.handle = handle
         self.actions = actions
+        self.rawProcessFunc = rawProcessFunc
     }
-    
+
     public func process(delegate: PackageTransactionDelegate) {
         defer { nextPackageTransactionId += 1 }
         
@@ -205,7 +221,7 @@ public class PackageTransaction<T: Codable> {
             transactionProcessCallbacks.removeValue(forKey: id)
         }
         
-        pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+        self.rawProcessFunc.invoke(handle: handle, id: id)
         
         do {
             try assertNoError()

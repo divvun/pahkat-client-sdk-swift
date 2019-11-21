@@ -153,7 +153,7 @@ public class PrefixPackageStore: NSObject {
             pahkat_prefix_transaction_new(handle, cStr, pahkat_client_err_callback)
         }
         try assertNoError()
-        return PackageTransaction(handle: ptr!, actions: actions)
+        return PackageTransaction(handle: ptr!, actions: actions, rawProcessFunc: .prefix)
     }
 }
 

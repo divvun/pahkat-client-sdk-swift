@@ -126,7 +126,7 @@ public class MacOSPackageStore {
             pahkat_macos_transaction_new(handle, cStr, pahkat_client_err_callback)
         }
         try assertNoError()
-        return PackageTransaction(handle: ptr!, actions: actions)
+        return PackageTransaction(handle: ptr!, actions: actions, rawProcessFunc: .macos)
     }
     
     deinit {
