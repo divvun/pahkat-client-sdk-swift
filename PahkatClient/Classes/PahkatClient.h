@@ -55,6 +55,7 @@ extern json_str_t *_Nullable
 pahkat_prefix_package_store_all_statuses(const void *_Nonnull handle,
                                          const json_str_t *_Nonnull repo_record,
                                          ERR_CALLBACK);
+
 extern const rust_slice_t
 pahkat_prefix_package_store_import(const void *_Nonnull handle,
                                    const char *_Nonnull package_key,
@@ -73,7 +74,7 @@ pahkat_prefix_package_store_config(const void *_Nonnull handle, ERR_CALLBACK);
 
 
 extern const json_str_t *_Nullable
-pahkat_prefix_package_store_resolve_package(const void *_Nonnull handle,
+pahkat_prefix_package_store_find_package_by_key(const void *_Nonnull handle,
                                             const char *_Nonnull package_key,
                                             ERR_CALLBACK);
 
@@ -93,6 +94,7 @@ pahkat_prefix_transaction_process(const void *_Nonnull handle,
                                                                   uint32_t),
                                  ERR_CALLBACK);
 
+#if TARGET_OS_OSX
 // MARK: macOS functions
 
 extern void *_Nonnull
@@ -124,6 +126,21 @@ pahkat_macos_package_store_download(const void *_Nonnull handle,
                                                                      uint64_t),
                                     ERR_CALLBACK);
 
+extern const rust_slice_t
+pahkat_macos_package_store_import(const void *_Nonnull handle,
+                                   const char *_Nonnull package_key,
+                                   const rust_path_t *_Nonnull installer_path,
+                                   ERR_CALLBACK);
+
+extern const json_str_t *_Nullable
+pahkat_macos_package_store_find_package_by_id(const void *_Nonnull handle,
+                                              const char *_Nonnull package_id,
+                                              ERR_CALLBACK);
+extern const json_str_t *_Nullable
+pahkat_macos_package_store_find_package_by_key(const void *_Nonnull handle,
+                                            const char *_Nonnull package_key,
+                                            ERR_CALLBACK);
+
 extern void pahkat_macos_package_store_clear_cache(const void *_Nonnull handle, ERR_CALLBACK);
 extern void pahkat_macos_package_store_refresh_repos(const void *_Nonnull handle, ERR_CALLBACK);
 extern void pahkat_macos_package_store_force_refresh_repos(const void *_Nonnull handle, ERR_CALLBACK);
@@ -151,6 +168,7 @@ pahkat_macos_transaction_process(const void *_Nonnull handle,
                                                                   const char *_Nonnull,
                                                                   uint32_t),
                                  ERR_CALLBACK);
+#endif // TARGET_OS_OSX
 
 // MARK: Store config functions
 

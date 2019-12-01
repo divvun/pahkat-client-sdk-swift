@@ -1,7 +1,11 @@
 #if os(macOS)
 import Foundation
 
-public class MacOSPackageStore {
+public class MacOSPackageStore: PackageStore {
+    typealias Target = InstallerTarget
+    
+    let jsonDecoder = JSONDecoder()
+    
     static public func `default`() -> MacOSPackageStore {
         let handle = pahkat_macos_package_store_default()
         return MacOSPackageStore(handle: handle)
@@ -64,8 +68,16 @@ public class MacOSPackageStore {
         }
     }
     
-    public func resolvePackage() {
+    func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
+        let slice = packageKey.rawValue.withCString { cPackageKey in
+            installerPath.withCString { cPath in
+                pahkat_macos_package_store_import(handle, cPackageKey, cPath, pahkat_client_err_callback)
+            }
+        }
+        try assertNoError()
+//        defer { pahkat_str_free(cPath) }
         
+        return String(bytes: slice, encoding: .utf8)!
     }
     
     public func clearCache() throws {
@@ -83,17 +95,18 @@ public class MacOSPackageStore {
         try assertNoError()
     }
     
-    public func repoIndexes() throws -> [RepositoryIndex] {
+    public func repoIndexes(withStatuses: Bool = true) throws -> [RepositoryIndex] {
         let repoIndexsCStr = pahkat_macos_package_store_repo_indexes(handle, pahkat_client_err_callback)
         try assertNoError()
         defer { pahkat_str_free(repoIndexsCStr) }
-        
-        let jsonDecoder = JSONDecoder()
                 
         let reposStr = String(cString: repoIndexsCStr!)
         let reposJson = reposStr.data(using: .utf8)!
         
         let repos = try jsonDecoder.decode([RepositoryIndex].self, from: reposJson)
+        if withStatuses {
+//            return repos.map { $0.statuses = try allStatuses(repo: RepoRecord(url: $0.meta.base, channel: $0.channel))}
+        }
         return repos
     }
     
@@ -109,13 +122,50 @@ public class MacOSPackageStore {
         defer { pahkat_str_free(statusesCStr) }
         
         let statusesData = String(cString: statusesCStr!).data(using: .utf8)!
-        let statuses = try JSONDecoder().decode(
+        let statuses = try jsonDecoder.decode(
             [String: PackageInstallStatus].self,
             from: statusesData)
         
         return statuses.mapValues { status in
             PackageStatusResponse(status: status, target: InstallerTarget.system)
         }
+    }
+    
+    private struct FindPackageByIdResponse: Codable {
+        let packageKey: PackageKey
+        let package: Package
+    }
+    
+//    func findPackage(byId id: String) throws -> (PackageKey, Package)? {
+//        let ptr = id.withCString { cStr in
+//            pahkat_macos_package_store_find_package_by_id(handle, cStr, pahkat_client_err_callback)
+//        }
+//        try assertNoError()
+//        
+//        if ptr == nil {
+//            return nil
+//        }
+//        
+//        defer { pahkat_str_free(ptr) }
+//        let data = String(cString: ptr!).data(using: .utf8)!
+//        
+//        let response = try jsonDecoder.decode(FindPackageByIdResponse.self, from: data)
+//        return (response.packageKey, response.package)
+//    }
+    
+    func findPackage(byKey key: PackageKey) throws -> Package? {
+        let ptr = key.rawValue.withCString { cStr in
+            pahkat_macos_package_store_find_package_by_key(handle, cStr, pahkat_client_err_callback)
+        }
+        try assertNoError()
+        
+        if ptr == nil {
+            return nil
+        }
+        
+        defer { pahkat_str_free(ptr) }
+        let data = String(cString: ptr!).data(using: .utf8)!
+        return try jsonDecoder.decode(Package.self, from: data)
     }
     
     public func transaction(actions: [TransactionAction<InstallerTarget>]) throws -> PackageTransaction<InstallerTarget> {

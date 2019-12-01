@@ -45,7 +45,7 @@ public class PrefixPackageStore: NSObject {
     
     public func resolvePackage(packageKey: PackageKey) throws -> Package? {
         let cJsonPackage = packageKey.rawValue.withCString { cPackageKey in
-            pahkat_prefix_package_store_resolve_package(handle, cPackageKey, pahkat_client_err_callback)
+            pahkat_prefix_package_store_find_package_by_key(handle, cPackageKey, pahkat_client_err_callback)
         }
         try assertNoError()
         defer { pahkat_str_free(cJsonPackage) }
