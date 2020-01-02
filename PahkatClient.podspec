@@ -37,8 +37,10 @@ Pod::Spec.new do |s|
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
-      :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
-          ${CARGO_HOME}/bin/cargo lipo --xcode-integ --features ffi,prefix &&\
+      :script => "unset CARGO_TARGET_DIR &&\
+          pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
+          [[ $CONFIGURATION == 'Release' ]] && V='--release' || V='' &&\
+          ${CARGO_HOME}/bin/cargo lipo --xcode-integ --features ffi,prefix $V &&\
           cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
@@ -47,8 +49,10 @@ Pod::Spec.new do |s|
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
-      :script => "pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
-          ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix &&\
+      :script => "unset CARGO_TARGET_DIR &&\
+          pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
+          [[ $CONFIGURATION == 'Release' ]] && V='--release' || V='' &&\
+          ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix $V &&\
           cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
