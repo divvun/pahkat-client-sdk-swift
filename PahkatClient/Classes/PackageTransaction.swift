@@ -42,13 +42,17 @@ public class PackageTransaction<T: Codable> {
 }
 
 enum RawProcessFunc {
+    #if os(macOS)
     case macos
+    #endif
     case prefix
     
     func invoke(handle: UnsafeRawPointer, id: UInt32) {
         switch self {
+        #if os(macOS)
         case .macos:
             pahkat_macos_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+        #endif
         case .prefix:
             pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
         }
