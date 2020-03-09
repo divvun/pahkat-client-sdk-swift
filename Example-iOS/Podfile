@@ -1,9 +1,8 @@
 supports_swift_versions '>= 5.0'
 use_frameworks!
-platform :ios, "9.0"
+platform :ios, "12.4"
 
 target 'PahkatClient_Example' do
-  pod 'PahkatClient', :path => '../'
-  
+  pod 'PahkatClient', :git => "https://github.com/divvun/pahkat-client-sdk-swift", :submodules => true
 end
 

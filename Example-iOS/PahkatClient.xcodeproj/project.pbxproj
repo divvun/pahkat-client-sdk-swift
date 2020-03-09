@@ -141,7 +141,6 @@
 				C6076CD7237E325D0019F6D1 /* Sources */,
 				C6076CD8237E325D0019F6D1 /* Frameworks */,
 				C6076CD9237E325D0019F6D1 /* Resources */,
-				2374F7ACA4CF2D1DEBACEDE4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -200,24 +199,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2374F7ACA4CF2D1DEBACEDE4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/PahkatClient/PahkatClient.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PahkatClient.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PahkatClient_Example/Pods-PahkatClient_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B22472ED818D0B27BC617339 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
