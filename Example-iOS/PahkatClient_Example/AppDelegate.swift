@@ -10,20 +10,32 @@ import UIKit
 import PahkatClient
 
 class D: PackageTransactionDelegate {
-    func transactionDidEvent(_ id: UInt32, packageKey: PackageKey, event: PackageTransactionEvent) {
-        print("event: \(id) \(packageKey) \(event)")
+    func isTransactionCancelled(_ id: UInt32) -> Bool {
+        return false
     }
-    
-    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32) {
-        print("unknown event: \(id) \(packageKey)")
+
+    func transactionWillInstall(_ id: UInt32, packageKey: PackageKey) {
+        print(#function, "\(id)")
     }
-    
+
+    func transactionWillUninstall(_ id: UInt32, packageKey: PackageKey) {
+        print(#function, "\(id)")
+    }
+
     func transactionDidComplete(_ id: UInt32) {
-        print("complete: \(id)")
+        print(#function, "\(id)")
     }
-    
-    func transactionDidError(_ id: UInt32, error: Error) {
-        print("error: \(id) \(error)")
+
+    func transactionDidCancel(_ id: UInt32) {
+        print(#function, "\(id)")
+    }
+
+    func transactionDidError(_ id: UInt32, packageKey: PackageKey?, error: Error?) {
+        print(#function, "\(id) \(String(describing: error))")
+    }
+
+    func transactionDidUnknownEvent(_ id: UInt32, packageKey: PackageKey, event: UInt32) {
+        print(#function, "\(id)")
     }
 }
 
