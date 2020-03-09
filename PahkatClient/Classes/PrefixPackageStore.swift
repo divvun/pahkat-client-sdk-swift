@@ -27,13 +27,14 @@ public class PrefixPackageStore: NSObject {
     
     private lazy var urlSession: URLSession = {
         let bundle = Bundle.main.bundleIdentifier ?? "app"
-        let config = URLSessionConfiguration.default
         
 #if os(iOS)
         let config = URLSessionConfiguration.background(withIdentifier: "\(bundle).PahkatClient")
         config.waitsForConnectivity = true
         config.isDiscretionary = true
         config.sessionSendsLaunchEvents = true
+#else
+        let config = URLSessionConfiguration.default
 #endif
         
         return URLSession(configuration: config, delegate: self, delegateQueue: nil)
