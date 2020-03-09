@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   
   s.static_framework = true
   s.macos.deployment_target = '10.10'
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '12.4'
   s.pod_target_xcconfig = {
     'CARGO_HOME': "$(HOME)/.cargo",
     'ENABLE_BITCODE': 'NO',
