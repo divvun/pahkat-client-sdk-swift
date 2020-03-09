@@ -75,9 +75,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            return true
         }
 
-        let indexes = try! store.repoIndexes()
-        let index = indexes.first!
-        let pkg = index.packages.values.first!
+        guard let indexes = try? store.repoIndexes(),
+            let index = indexes.first,
+            let pkg = index.packages.values.first else {
+                print("no package found!")
+                return true
+        }
         let pkgKey = index.absoluteKey(for: pkg)
 
         print("Package key: \(pkgKey)")
