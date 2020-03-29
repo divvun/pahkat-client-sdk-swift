@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PahkatClient'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'Swift SDK for Pahkat Client'
   s.description      = <<-DESC
   Swift SDK for Pahkat Client
@@ -22,26 +22,26 @@ Pod::Spec.new do |s|
     'DEFINES_MODULE' => 'YES'
   }
   # s.macos.pod_target_xcconfig = {
-  #   'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}"'
+  #   'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat/pahkat-client-core/target/${CONFIGURATION}"'
   # }
   # s.ios.pod_target_xcconfig = {
-  #   'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}"'
+  #   'LIBRARY_SEARCH_PATHS': '"${PODS_TARGET_SRCROOT}/pahkat/pahkat-client-core/target/universal/${CONFIGURATION}"'
   # }
   # s.macos.user_target_xcconfig = {
-  #   'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat-client-core/target/${CONFIGURATION}"'
+  #   'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat/pahkat-client-core/target/${CONFIGURATION}"'
   # }
   # s.ios.user_target_xcconfig = {
-  #   'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat-client-core/target/universal/${CONFIGURATION}"'
+  #   'LIBRARY_SEARCH_PATHS': '"${PODS_ROOT}/PahkatClient/pahkat/pahkat-client-core/target/universal/${CONFIGURATION}"'
   # }
   s.ios.script_phases = [
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
       :script => "unset CARGO_TARGET_DIR &&\
-          pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
+          pushd ${PODS_TARGET_SRCROOT}/pahkat/pahkat-client-core &&\
           [[ $CONFIGURATION == 'Release' ]] && V='--release' || V='' &&\
           ${CARGO_HOME}/bin/cargo lipo --xcode-integ --features ffi,prefix $V &&\
-          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
+          cp ${PODS_TARGET_SRCROOT}/pahkat/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
   ]
@@ -50,14 +50,14 @@ Pod::Spec.new do |s|
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
       :script => "unset CARGO_TARGET_DIR &&\
-          pushd ${PODS_TARGET_SRCROOT}/pahkat-client-core &&\
+          pushd ${PODS_TARGET_SRCROOT}/pahkat/pahkat-client-core &&\
           [[ $CONFIGURATION == 'Release' ]] && V='--release' || V='' &&\
           ${CARGO_HOME}/bin/cargo build --lib --features ffi,macos,prefix $V &&\
-          cp ${PODS_TARGET_SRCROOT}/pahkat-client-core/target/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
+          cp ${PODS_TARGET_SRCROOT}/pahkat/target/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
       :shell_path => "/bin/sh"
     }
   ]
-  s.preserve_paths = "pahkat-client-core"
+  s.preserve_paths = "pahkat"
   s.source_files = 'PahkatClient/Classes/**/*'
   s.public_header_files = 'PahkatClient/Classes/**/*.h'
   s.vendored_libraries = 'Libraries/libpahkat_client.a'

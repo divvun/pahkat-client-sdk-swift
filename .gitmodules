@@ -1,3 +1,4 @@
-[submodule "pahkat-client-core"]
-	path = pahkat-client-core
-	url = https://github.com/divvun/pahkat-client-core
+[submodule "pahkat"]
+	path = pahkat
+	url = https://github.com/divvun/pahkat
+	branch = feature/toml

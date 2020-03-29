@@ -1,23 +1,16 @@
 PODS:
-  - PahkatClient (0.1.0)
+  - PahkatClient (0.2.0)
 
 DEPENDENCIES:
-  - PahkatClient (from `https://github.com/divvun/pahkat-client-sdk-swift`)
+  - PahkatClient (from `../`)
 
 EXTERNAL SOURCES:
   PahkatClient:
-    :git: https://github.com/divvun/pahkat-client-sdk-swift
-    :submodules: true
-
-CHECKOUT OPTIONS:
-  PahkatClient:
-    :commit: 6c6b5541c9f223b9266be51226637dadd48a61b6
-    :git: https://github.com/divvun/pahkat-client-sdk-swift
-    :submodules: true
+    :path: "../"
 
 SPEC CHECKSUMS:
-  PahkatClient: 7e3fac795d2951d6102ff31786e3920cd235581d
+  PahkatClient: 54d6c257cbefe58e7b213d25f1c5e147aa3adcb1
 
-PODFILE CHECKSUM: 13182743990dab0fb4fe522bff8fe8145c31a97d
+PODFILE CHECKSUM: c3cc65c752d52f8e19162bc002c252b323c2ac57
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

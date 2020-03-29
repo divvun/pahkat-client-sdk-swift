@@ -19,11 +19,11 @@ public class PrefixPackageStore: NSObject {
         return PrefixPackageStore(handle: handle!)
     }
     
-    public func config() throws -> StoreConfig {
-        let ptr = pahkat_prefix_package_store_config(handle, pahkat_client_err_callback)
-        try assertNoError()
-        return StoreConfig(handle: ptr!)
-    }
+//    public func config() throws -> StoreConfig {
+//        let ptr = pahkat_prefix_package_store_config(handle, pahkat_client_err_callback)
+//        try assertNoError()
+//        return StoreConfig(handle: ptr!)
+//    }
     
     private lazy var urlSession: URLSession = {
         let bundle = Bundle.main.bundleIdentifier ?? "app"
@@ -113,19 +113,19 @@ public class PrefixPackageStore: NSObject {
         try assertNoError()
     }
     
-    public func repoIndexes() throws -> [RepositoryIndex] {
-        let repoIndexsCStr = pahkat_prefix_package_store_repo_indexes(handle, pahkat_client_err_callback)
-        try assertNoError()
-        defer { pahkat_str_free(repoIndexsCStr) }
-        
-        let jsonDecoder = JSONDecoder()
-                
-        let reposStr = String(cString: repoIndexsCStr!)
-        let reposJson = reposStr.data(using: .utf8)!
-        
-        let repos = try jsonDecoder.decode([RepositoryIndex].self, from: reposJson)
-        return repos
-    }
+//    public func repoIndexes() throws -> [RepositoryIndex] {
+//        let repoIndexsCStr = pahkat_prefix_package_store_repo_indexes(handle, pahkat_client_err_callback)
+//        try assertNoError()
+//        defer { pahkat_str_free(repoIndexsCStr) }
+//        
+//        let jsonDecoder = JSONDecoder()
+//                
+//        let reposStr = String(cString: repoIndexsCStr!)
+//        let reposJson = reposStr.data(using: .utf8)!
+//        
+//        let repos = try jsonDecoder.decode([RepositoryIndex].self, from: reposJson)
+//        return repos
+//    }
     
     public func allStatuses(repo: RepoRecord) throws -> [String: PackageStatusResponse] {
         let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!

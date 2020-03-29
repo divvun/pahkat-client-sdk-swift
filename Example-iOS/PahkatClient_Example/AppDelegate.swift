@@ -66,26 +66,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         do {
-           let config = try store.config()
-           let url = URL(string: "http://localhost:5000/")!
-           try config.set(repos: [RepoRecord(url: url, channel: .stable)])
+//           let config = try store.config()
+           let url = URL(string: "https://x.brendan.so/divvun-pahkat-repo/")!
+//           try config.set(repos: [RepoRecord(url: url, channel: .stable)])
            try store.forceRefreshRepos()
         } catch {
            print(error)
            return true
         }
 
-        guard let indexes = try? store.repoIndexes(),
-            let index = indexes.first,
-            let pkg = index.packages.values.first else {
-                print("no package found!")
-                return true
-        }
-        let pkgKey = index.absoluteKey(for: pkg)
+//        guard let indexes = try? store.repoIndexes(),
+//            let index = indexes.first,
+//            let pkg = index.packages.values.first else {
+//                print("no package found!")
+//                return true
+//        }
+//        let pkgKey = index.absoluteKey(for: pkg)
 
-        print("Package key: \(pkgKey)")
-//        let status = index.status(for: pkgKey)
-        print(try! store.allStatuses(repo: RepoRecord(url: index.meta.base, channel: .stable)))
+//        print("Package key: \(pkgKey)")
+////        let status = index.status(for: pkgKey)
+//        print(try! store.allStatuses(repo: RepoRecord(url: index.meta.base, channel: .stable)))
+        let pkgKey = PackageKey(from: URL(string: "https://x.brendan.so/divvun-pahkat-repo/packages/speller-sme?platform=ios")!)
 
         do {
            downloading = try store.download(packageKey: pkgKey) { (error, path) in
