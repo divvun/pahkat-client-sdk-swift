@@ -436,7 +436,7 @@ public struct PackageStatusResponse: Codable {
 public struct PackageKey: Codable, Hashable, Comparable {
     public let url: String
     public let id: String
-    public let channel: String
+    public let channel: String?
     
     public let rawValue: String
     
@@ -470,12 +470,12 @@ public struct PackageKey: Codable, Hashable, Comparable {
         }()
         self.url = newUrl.absoluteString
         self.id = url.lastPathComponent
-        self.channel = url.fragment ?? "stable"
         
         let u = newUrl.appendingPathComponent("packages")
             .appendingPathComponent(id)
             .absoluteString
-        self.rawValue = "\(u)#\(channel)"
+        self.rawValue = "\(u)"
+        self.channel = nil // TODO
     }
 }
 

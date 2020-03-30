@@ -53,6 +53,11 @@ pahkat_prefix_package_store_import(const void *_Nonnull handle,
                                    rust_slice_t package_key,
                                    rust_slice_t installer_path,
                                    ERR_CALLBACK);
+extern rust_slice_t
+pahkat_prefix_package_store_download_url(const void *_Nonnull handle,
+                                        rust_slice_t package_key,
+                                        ERR_CALLBACK);
+
 
 extern void pahkat_prefix_package_store_clear_cache(const void *_Nonnull handle, ERR_CALLBACK);
 extern void pahkat_prefix_package_store_refresh_repos(const void *_Nonnull handle, ERR_CALLBACK);

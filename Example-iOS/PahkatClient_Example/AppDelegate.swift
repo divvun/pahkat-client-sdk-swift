@@ -111,7 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                print("Done!")
            }
         } catch {
-           print(error)
+            print("Some error")
+            print(error)
         }
         print("Oh lawd they doing")
         

@@ -58,19 +58,25 @@ public class PrefixPackageStore: NSObject {
     @discardableResult
     public func download(packageKey: PackageKey, completion: ((Error?, String?) -> ())? = nil) throws -> URLSessionDownloadTask {
         print("DOWNLOAD")
-        guard let package = try self.resolvePackage(packageKey: packageKey) else {
-            throw PahkatClientError(message: "No package found for \(packageKey.rawValue)")
-        }
+//        guard let package = try self.resolvePackage(packageKey: packageKey) else {
+//            throw PahkatClientError(message: "No package found for \(packageKey.rawValue)")
+//        }
+//
+//        guard let installer = package.tarballInstaller else {
+//            throw PahkatClientError(message: "No tarball installer for \(packageKey.rawValue)")
+//        }
         
-        guard let installer = package.tarballInstaller else {
-            throw PahkatClientError(message: "No tarball installer for \(packageKey.rawValue)")
+        let urlPtr = packageKey.rawValue.withRustSlice { cPackageKey in
+            pahkat_prefix_package_store_download_url(handle, cPackageKey, errCallback)
         }
+        try assertNoError()
+        let url = URL(string: String.from(slice: urlPtr!))!
         
-        let task = self.urlSession.downloadTask(with: installer.url)
+        let task = self.urlSession.downloadTask(with: url)
         task.taskDescription = packageKey.rawValue
         
         if #available(OSX 10.13, iOS 11.0, *) {
-            task.countOfBytesClientExpectsToReceive = Int64(installer.size)
+//            task.countOfBytesClientExpectsToReceive = Int64(installer.size)
         } else {
             // Do nothing.
         }
@@ -79,7 +85,7 @@ public class PrefixPackageStore: NSObject {
             downloadCallbacks[packageKey] = completion
         }
         
-        print("RESUME \(installer.url)")
+        print("RESUME \(url)")
         
         task.resume()
         return task
