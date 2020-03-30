@@ -13,7 +13,7 @@ public class MacOSPackageStore: PackageStore {
     
     static public func create(path: String) throws -> MacOSPackageStore {
         let handle = path.withCString {
-            pahkat_macos_package_store_new($0, pahkat_client_err_callback)
+            pahkat_macos_package_store_new($0, errCallback)
         }
         try assertNoError()
         return MacOSPackageStore(handle: handle!)
@@ -21,7 +21,7 @@ public class MacOSPackageStore: PackageStore {
     
     static public func load(path: String) throws -> MacOSPackageStore {
         let handle = path.withCString {
-            pahkat_macos_package_store_load($0, pahkat_client_err_callback)
+            pahkat_macos_package_store_load($0, errCallback)
         }
         try assertNoError()
         return MacOSPackageStore(handle: handle!)
@@ -34,7 +34,7 @@ public class MacOSPackageStore: PackageStore {
     }
     
     public func config() throws -> StoreConfig {
-        let ptr = pahkat_macos_package_store_config(handle, pahkat_client_err_callback)
+        let ptr = pahkat_macos_package_store_config(handle, errCallback)
         try assertNoError()
         return StoreConfig(handle: ptr!)
     }
@@ -44,7 +44,7 @@ public class MacOSPackageStore: PackageStore {
         
         DispatchQueue.global(qos: .userInitiated).async {
             let slice = packageKey.rawValue.withCString { cPackageKey in
-                pahkat_macos_package_store_download(self.handle, cPackageKey, downloadProcessHandler, pahkat_client_err_callback)
+                pahkat_macos_package_store_download(self.handle, cPackageKey, downloadProcessHandler, errCallback)
             }
             
             if delegate.isDownloadCancelled {
@@ -71,7 +71,7 @@ public class MacOSPackageStore: PackageStore {
     func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
         let slice = packageKey.rawValue.withCString { cPackageKey in
             installerPath.withCString { cPath in
-                pahkat_macos_package_store_import(handle, cPackageKey, cPath, pahkat_client_err_callback)
+                pahkat_macos_package_store_import(handle, cPackageKey, cPath, errCallback)
             }
         }
         try assertNoError()
@@ -81,22 +81,22 @@ public class MacOSPackageStore: PackageStore {
     }
     
     public func clearCache() throws {
-        pahkat_macos_package_store_clear_cache(handle, pahkat_client_err_callback)
-        try assertNoError()
+//        pahkat_macos_package_store_clear_cache(handle, errCallback)
+//        try assertNoError()
     }
     
     public func refreshRepos() throws {
-        pahkat_macos_package_store_refresh_repos(handle, pahkat_client_err_callback)
+        pahkat_macos_package_store_refresh_repos(handle, errCallback)
         try assertNoError()
     }
     
     public func forceRefreshRepos() throws {
-        pahkat_macos_package_store_force_refresh_repos(handle, pahkat_client_err_callback)
+        pahkat_macos_package_store_force_refresh_repos(handle, errCallback)
         try assertNoError()
     }
     
     public func repoIndexes(withStatuses: Bool = true) throws -> [RepositoryIndex] {
-        let repoIndexsCStr = pahkat_macos_package_store_repo_indexes(handle, pahkat_client_err_callback)
+        let repoIndexsCStr = pahkat_macos_package_store_repo_indexes(handle, errCallback)
         try assertNoError()
         defer { pahkat_str_free(repoIndexsCStr) }
                 
@@ -115,7 +115,7 @@ public class MacOSPackageStore: PackageStore {
         
         let statusesCStr = repoRecordStr.withCString { cStr in
             target.stringValue.withCString { targetCStr in
-                pahkat_macos_package_store_all_statuses(handle, cStr, targetCStr, pahkat_client_err_callback)
+                pahkat_macos_package_store_all_statuses(handle, cStr, targetCStr, errCallback)
             }
         }
         try assertNoError()
@@ -138,7 +138,7 @@ public class MacOSPackageStore: PackageStore {
     
 //    func findPackage(byId id: String) throws -> (PackageKey, Package)? {
 //        let ptr = id.withCString { cStr in
-//            pahkat_macos_package_store_find_package_by_id(handle, cStr, pahkat_client_err_callback)
+//            pahkat_macos_package_store_find_package_by_id(handle, cStr, errCallback)
 //        }
 //        try assertNoError()
 //        
@@ -155,7 +155,7 @@ public class MacOSPackageStore: PackageStore {
     
     func findPackage(byKey key: PackageKey) throws -> Package? {
         let ptr = key.rawValue.withCString { cStr in
-            pahkat_macos_package_store_find_package_by_key(handle, cStr, pahkat_client_err_callback)
+            pahkat_macos_package_store_find_package_by_key(handle, cStr, errCallback)
         }
         try assertNoError()
         
@@ -173,7 +173,7 @@ public class MacOSPackageStore: PackageStore {
         let jsonActions = try JSONEncoder().encode(actions)
         print("Encoded: \(jsonActions)")
         let ptr = String(data: jsonActions, encoding: .utf8)!.withCString { cStr in
-            pahkat_macos_transaction_new(handle, cStr, pahkat_client_err_callback)
+            pahkat_macos_transaction_new(handle, cStr, errCallback)
         }
         try assertNoError()
         return PackageTransaction(handle: ptr!, actions: actions, rawProcessFunc: .macos)

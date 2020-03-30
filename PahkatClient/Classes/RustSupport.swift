@@ -63,3 +63,55 @@ extension rust_slice_t: Collection {
             .pointee
     }
 }
+
+extension String {
+    @inlinable
+    func ensureContiguous() -> String {
+        if self.isContiguousUTF8 {
+            return self
+        } else {
+            var copied = self
+            copied.makeContiguousUTF8()
+            return copied
+        }
+    }
+    
+    @inlinable
+    func withRustSlice<T>(callback: (rust_slice_t) -> T) -> T? {
+        let value = self.ensureContiguous()
+        
+        return value.utf8.withContiguousStorageIfAvailable { pointer in
+            let raw = UnsafeMutableRawPointer(mutating: pointer.baseAddress!)
+            let slice = rust_slice_t(data: raw, len: rust_usize_t(pointer.count))
+            return callback(slice)
+        }
+    }
+    
+    @inlinable
+    static func from(slice: rust_slice_t) -> String {
+        return String(bytes: slice, encoding: .utf8) ?? ""
+    }
+}
+
+extension rust_bool_t: ExpressibleByBooleanLiteral {
+    public typealias BooleanLiteralType = Bool
+    
+    @inlinable
+    public init(booleanLiteral value: Bool) {
+        self.init()
+        self.internal_value = value ? 1 : 0
+    }
+    
+    @inlinable
+    public var value: Bool {
+        self.internal_value != 0
+    }
+}
+
+extension Bool {
+    @inlinable
+    func into() -> rust_bool_t {
+        self ? true : false
+    }
+}
+

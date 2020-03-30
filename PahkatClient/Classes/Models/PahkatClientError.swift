@@ -24,16 +24,19 @@ extension PahkatClientError: CustomDebugStringConvertible {
     }
 }
 
-private var pahkat_client_err: PahkatClientError? = nil
-
-internal let pahkat_client_err_callback: @convention(c) (UnsafePointer<Int8>) -> Void = { cStr in
-    let error = String(cString: cStr)
-    pahkat_client_err = PahkatClientError(message: error)
-}
+private var err: PahkatClientError? = nil
 
 internal func assertNoError() throws {
-    if let err = pahkat_client_err {
-        pahkat_client_err = nil
-        throw err
+    if let err1 = err {
+        err = nil
+        throw err1
+    }
+}
+
+let errCallback: @convention(c) (UnsafeMutableRawPointer?, rust_usize_t) -> Void = {
+    (ptr, len) in
+    
+    if let ptr = ptr {
+        err = PahkatClientError(message: String(bytes: rust_slice_t(data: ptr, len: len), encoding: .utf8) ?? "<unknown>")
     }
 }

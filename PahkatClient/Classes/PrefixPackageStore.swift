@@ -4,34 +4,33 @@ public class PrefixPackageStore: NSObject {
     private let handle: UnsafeRawPointer
     
     public static func create(path prefixPath: String) throws -> PrefixPackageStore {
-        let handle = prefixPath.withCString {
-            pahkat_prefix_package_store_create($0, pahkat_client_err_callback)
+        let handle = prefixPath.withRustSlice {
+            pahkat_prefix_package_store_create($0, errCallback)
         }
         try assertNoError()
-        return PrefixPackageStore(handle: handle!)
+        return PrefixPackageStore(handle: handle!!)
     }
     
     public static func open(path prefixPath: String) throws -> PrefixPackageStore {
-        let handle = prefixPath.withCString {
-            pahkat_prefix_package_store_open($0, pahkat_client_err_callback)
+        let handle = prefixPath.withRustSlice {
+            pahkat_prefix_package_store_open($0, errCallback)
         }
         try assertNoError()
-        return PrefixPackageStore(handle: handle!)
+        return PrefixPackageStore(handle: handle!!)
     }
     
 //    public func config() throws -> StoreConfig {
-//        let ptr = pahkat_prefix_package_store_config(handle, pahkat_client_err_callback)
+//        let ptr = pahkat_prefix_package_store_config(handle, errCallback)
 //        try assertNoError()
 //        return StoreConfig(handle: ptr!)
 //    }
     
-    private lazy var urlSession: URLSession = {
+    lazy var urlSession: URLSession = {
         let bundle = Bundle.main.bundleIdentifier ?? "app"
         
 #if os(iOS)
         let config = URLSessionConfiguration.background(withIdentifier: "\(bundle).PahkatClient")
         config.waitsForConnectivity = true
-        config.isDiscretionary = true
         config.sessionSendsLaunchEvents = true
 #else
         let config = URLSessionConfiguration.default
@@ -45,12 +44,12 @@ public class PrefixPackageStore: NSObject {
     }
     
     public func resolvePackage(packageKey: PackageKey) throws -> Package? {
-        let cJsonPackage = packageKey.rawValue.withCString { cPackageKey in
-            pahkat_prefix_package_store_find_package_by_key(handle, cPackageKey, pahkat_client_err_callback)
+        let cJsonPackage = packageKey.rawValue.withRustSlice { cPackageKey in
+            pahkat_prefix_package_store_find_package_by_key(handle, cPackageKey, errCallback)
         }
         try assertNoError()
-        defer { pahkat_str_free(cJsonPackage) }
-        let data = String(cString: cJsonPackage!).data(using: .utf8)!
+        defer { pahkat_str_free(cJsonPackage!) }
+        let data = String.from(slice: cJsonPackage!).data(using: .utf8)!
         return try JSONDecoder().decode(Package.self, from: data)
     }
     
@@ -87,34 +86,34 @@ public class PrefixPackageStore: NSObject {
     }
     
     func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
-        let slice = packageKey.rawValue.withCString { cPackageKey in
-            installerPath.withCString { cPath in
-                pahkat_prefix_package_store_import(handle, cPackageKey, cPath, pahkat_client_err_callback)
+        let slice = packageKey.rawValue.withRustSlice { cPackageKey in
+            installerPath.withRustSlice { cPath in
+                pahkat_prefix_package_store_import(handle, cPackageKey, cPath, errCallback)
             }
         }
         try assertNoError()
 //        defer { pahkat_str_free(cPath) }
         
-        return String(bytes: slice, encoding: .utf8)!
+        return String(bytes: slice!!, encoding: .utf8)!
     }
     
     public func clearCache() throws {
-        pahkat_prefix_package_store_clear_cache(handle, pahkat_client_err_callback)
+        pahkat_prefix_package_store_clear_cache(handle, errCallback)
         try assertNoError()
     }
     
     public func refreshRepos() throws {
-        pahkat_prefix_package_store_refresh_repos(handle, pahkat_client_err_callback)
+        pahkat_prefix_package_store_refresh_repos(handle, errCallback)
         try assertNoError()
     }
     
     public func forceRefreshRepos() throws {
-        pahkat_prefix_package_store_force_refresh_repos(handle, pahkat_client_err_callback)
+        pahkat_prefix_package_store_force_refresh_repos(handle, errCallback)
         try assertNoError()
     }
     
 //    public func repoIndexes() throws -> [RepositoryIndex] {
-//        let repoIndexsCStr = pahkat_prefix_package_store_repo_indexes(handle, pahkat_client_err_callback)
+//        let repoIndexsCStr = pahkat_prefix_package_store_repo_indexes(handle, errCallback)
 //        try assertNoError()
 //        defer { pahkat_str_free(repoIndexsCStr) }
 //        
@@ -130,13 +129,13 @@ public class PrefixPackageStore: NSObject {
     public func allStatuses(repo: RepoRecord) throws -> [String: PackageStatusResponse] {
         let repoRecordStr = String(data: try JSONEncoder().encode(repo), encoding: .utf8)!
         
-        let statusesCStr = repoRecordStr.withCString { cStr in
-            pahkat_prefix_package_store_all_statuses(handle, cStr, pahkat_client_err_callback)
+        let statusesCStr = repoRecordStr.withRustSlice { cStr in
+            pahkat_prefix_package_store_all_statuses(handle, cStr, errCallback)
         }
         try assertNoError()
-        defer { pahkat_str_free(statusesCStr) }
+        defer { pahkat_str_free(statusesCStr!) }
         
-        let statusesData = String(cString: statusesCStr!).data(using: .utf8)!
+        let statusesData = String.from(slice: statusesCStr!).data(using: .utf8)!
         let statuses = try JSONDecoder().decode(
             [String: PackageInstallStatus].self,
             from: statusesData)
@@ -150,11 +149,11 @@ public class PrefixPackageStore: NSObject {
         print("Encoding: \(actions)")
         let jsonActions = try JSONEncoder().encode(actions)
         print("Encoded: \(jsonActions)")
-        let ptr = String(data: jsonActions, encoding: .utf8)!.withCString { cStr in
-            pahkat_prefix_transaction_new(handle, cStr, pahkat_client_err_callback)
+        let ptr = String(data: jsonActions, encoding: .utf8)!.withRustSlice { cStr in
+            pahkat_prefix_transaction_new(handle, cStr, errCallback)
         }
         try assertNoError()
-        return PackageTransaction(handle: ptr!, actions: actions, rawProcessFunc: .prefix)
+        return PackageTransaction(handle: ptr!!, actions: actions, rawProcessFunc: .prefix)
     }
 }
 

@@ -9,23 +9,24 @@ import Foundation
 
 internal var transactionProcessCallbacks = [UInt32: PackageTransactionDelegate]()
 
-internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<Int8>, UInt32) -> UInt8 = { tag, cPackageKey, cEvent in
+
+internal let transactionProcessHandler: @convention(c) (UInt32, rust_slice_t, UInt32) -> rust_bool_t = { tag, cPackageKey, cEvent in
     guard let delegate = transactionProcessCallbacks[tag] else {
         // TODO: log
-        return 0
+        return false
     }
     
     if delegate.isTransactionCancelled(tag) {
         delegate.transactionDidCancel(tag)
         transactionProcessCallbacks.removeValue(forKey: tag)
-        return 0
+        return false
     }
     
-    let packageKey = PackageKey(from: URL(string: String(cString: cPackageKey))!)
+    let packageKey = PackageKey(from: URL(string: String.from(slice: cPackageKey))!)
     
     guard let event = PackageTransactionEvent(rawValue: cEvent) else {
         delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)
-        return delegate.isTransactionCancelled(tag) ? 0 : 1
+        return delegate.isTransactionCancelled(tag).into()
     }
     
     switch event {
@@ -43,5 +44,5 @@ internal let transactionProcessHandler: @convention(c) (UInt32, UnsafePointer<In
         break
     }
     
-    return delegate.isTransactionCancelled(tag) ? 0 : 1
+    return delegate.isTransactionCancelled(tag).into()
 }

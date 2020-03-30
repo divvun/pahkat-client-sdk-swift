@@ -15,7 +15,7 @@ public class StoreConfig {
     }
     
 //    public func configPath() throws -> String {
-//        let slice = pahkat_store_config_config_path(handle, pahkat_client_err_callback)
+//        let slice = pahkat_store_config_config_path(handle, errCallback)
 //        // TODO: free
 //        try assertNoError()
 //        return String(bytes: slice, encoding: .utf8)!
@@ -25,10 +25,10 @@ public class StoreConfig {
 //        key.withCString { key in
 //            if let value = value {
 //                value.withCString { value in
-//                    pahkat_store_config_set_ui_value(handle, key, value, pahkat_client_err_callback)
+//                    pahkat_store_config_set_ui_value(handle, key, value, errCallback)
 //                }
 //            } else {
-//                pahkat_store_config_set_ui_value(handle, key, nil, pahkat_client_err_callback)
+//                pahkat_store_config_set_ui_value(handle, key, nil, errCallback)
 //            }
 //        }
 //
@@ -37,7 +37,7 @@ public class StoreConfig {
 //
 //    public func get(uiSetting key: String) throws -> String? {
 //        let cValue = key.withCString { key in
-//            pahkat_store_config_ui_value(handle, key, pahkat_client_err_callback)
+//            pahkat_store_config_ui_value(handle, key, errCallback)
 //        }
 //
 //        try assertNoError()
@@ -51,7 +51,7 @@ public class StoreConfig {
 //    }
     
 //    public func repos() throws -> [RepoRecord] {
-//        let cStr = pahkat_store_config_repos(handle, pahkat_client_err_callback)
+//        let cStr = pahkat_store_config_repos(handle, errCallback)
 //        try assertNoError()
 //
 //        defer { pahkat_str_free(cStr) }
@@ -64,14 +64,14 @@ public class StoreConfig {
 //    public func set(repos: [RepoRecord]) throws {
 //        let json = try! JSONEncoder().encode(repos)
 //        String(data: json, encoding: .utf8)!.withCString { cStr in
-//            pahkat_store_config_set_repos(handle, cStr, pahkat_client_err_callback)
+//            pahkat_store_config_set_repos(handle, cStr, errCallback)
 //        }
 //        try assertNoError()
 //    }
 //
 //    public func setCacheBase(url: URL) throws {
 //        url.absoluteString.withCString { cStr in
-//            pahkat_store_config_set_cache_base_url(handle, cStr, pahkat_client_err_callback)
+//            pahkat_store_config_set_cache_base_url(handle, cStr, errCallback)
 //        }
 //        try assertNoError()
 //    }
@@ -82,7 +82,7 @@ public class StoreConfig {
 //    }
 //
 //    public func cacheBaseURL() throws -> URL {
-//        let cStr = pahkat_store_config_cache_base_url(handle, pahkat_client_err_callback)
+//        let cStr = pahkat_store_config_cache_base_url(handle, errCallback)
 //        try assertNoError()
 //        defer { pahkat_str_free(cStr) }
 //

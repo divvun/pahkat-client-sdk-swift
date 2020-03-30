@@ -51,10 +51,10 @@ enum RawProcessFunc {
         switch self {
         #if os(macOS)
         case .macos:
-            pahkat_macos_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+            pahkat_macos_transaction_process(handle, id, transactionProcessHandler, errCallback)
         #endif
         case .prefix:
-            pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, pahkat_client_err_callback)
+            pahkat_prefix_transaction_process(handle, id, transactionProcessHandler, errCallback)
         }
     }
 }
