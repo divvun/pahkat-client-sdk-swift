@@ -151,6 +151,15 @@ public class PrefixPackageStore: NSObject {
         }
     }
     
+    public func status(for packageKey: PackageKey) throws -> PackageInstallStatus {
+        let status = packageKey.rawValue.withRustSlice { cStr in
+            pahkat_prefix_package_store_status(handle, cStr, errCallback)
+        }
+        try assertNoError()
+        
+        return PackageInstallStatus.init(rawValue: status!) ?? PackageInstallStatus.invalidMetadata
+    }
+    
     public func transaction(actions: [TransactionAction<Empty>]) throws -> PackageTransaction<Empty> {
         print("Encoding: \(actions)")
         let jsonActions = try JSONEncoder().encode(actions)
