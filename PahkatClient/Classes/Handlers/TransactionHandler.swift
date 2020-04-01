@@ -44,5 +44,5 @@ internal let transactionProcessHandler: @convention(c) (UInt32, rust_slice_t, UI
         break
     }
     
-    return delegate.isTransactionCancelled(tag).into()
+    return !delegate.isTransactionCancelled(tag).into()
 }

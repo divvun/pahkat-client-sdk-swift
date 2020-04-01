@@ -91,7 +91,7 @@ public class PrefixPackageStore: NSObject {
         return task
     }
     
-    func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
+    public func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
         let slice = packageKey.rawValue.withRustSlice { cPackageKey in
             installerPath.withRustSlice { cPath in
                 pahkat_prefix_package_store_import(handle, cPackageKey, cPath, errCallback)
@@ -217,7 +217,7 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
         
         do {
             let path = try self.import(packageKey: packageKey, installerPath: location.path)
-            print(path)
+            print("Path imported: \(path)")
             self.downloadCallbacks[packageKey]?(nil, path)
         } catch {
             print(error)

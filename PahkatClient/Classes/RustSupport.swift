@@ -115,3 +115,9 @@ extension Bool {
     }
 }
 
+extension rust_bool_t {
+    @inlinable
+    static prefix func !(this: rust_bool_t) -> rust_bool_t {
+        return this.internal_value == 0 ? true : false
+    }
+}
