@@ -1,6 +1,7 @@
 import Foundation
 
 public class PrefixPackageStore: NSObject {
+    public var backgrounURLSessionCompletion: (() -> Void)? // TODO: consider making this more elegant
     private let handle: UnsafeRawPointer
     
     public static func create(path prefixPath: String) throws -> PrefixPackageStore {
@@ -176,7 +177,7 @@ public class PrefixPackageStore: NSObject {
 extension PrefixPackageStore: URLSessionDelegate {
     @available(iOS 9.0, *)
     public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        // TODO
+        backgrounURLSessionCompletion?()
     }
 }
 #endif
