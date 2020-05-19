@@ -37,7 +37,7 @@ Pod::Spec.new do |s|
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
-      :script => "./build_ios.sh",
+      :script => "${PODS_TARGET_SRCROOT}/build_ios.sh",
       :shell_path => "/bin/sh"
     }
   ]
@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
       :shell_path => "/bin/sh"
     }
   ]
-  s.preserve_paths = "pahkat"
+  s.preserve_paths = ["pahkat", "build_ios.sh"]
   s.source_files = 'PahkatClient/Classes/**/*'
   s.public_header_files = 'PahkatClient/Classes/**/*.h'
   s.vendored_libraries = 'Libraries/libpahkat_client.a'
