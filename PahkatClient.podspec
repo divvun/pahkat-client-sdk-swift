@@ -37,11 +37,7 @@ Pod::Spec.new do |s|
     {
       :name => "Build PahkatClient with Cargo",
       :execution_position => :before_compile,
-      :script => "unset CARGO_TARGET_DIR &&\
-          pushd ${PODS_TARGET_SRCROOT}/pahkat/pahkat-client-core &&\
-          [[ $CONFIGURATION == 'Release' ]] && V='--release' || V='' &&\
-          ${CARGO_HOME}/bin/cargo lipo --features ffi,prefix --package pahkat-client $V &&\
-          cp ${PODS_TARGET_SRCROOT}/pahkat/target/universal/${CONFIGURATION}/libpahkat_client.a ${PODS_TARGET_SRCROOT}/Libraries",
+      :script => "./build_ios.sh",
       :shell_path => "/bin/sh"
     }
   ]
