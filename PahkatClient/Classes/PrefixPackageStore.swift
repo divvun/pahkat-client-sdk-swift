@@ -171,6 +171,16 @@ public class PrefixPackageStore: NSObject {
         try assertNoError()
         return PackageTransaction(handle: ptr!!, actions: actions, rawProcessFunc: .prefix)
     }
+
+    public func set(repos: [URL: RepoRecord]) throws {
+        let jsonRepos = try JSONEncoder().encode(repos)
+
+        String(data: jsonRepos, encoding: .utf8)!.withRustSlice { cStr in
+            pahkat_config_repos_set(handle, cStr, errCallback)
+        }
+        
+        try assertNoError()
+    }
 }
 
 #if os(iOS)

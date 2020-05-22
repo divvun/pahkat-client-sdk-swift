@@ -23,6 +23,7 @@ protocol PackageStore: class {
     func refreshRepos() throws
     func clearCache() throws
     func forceRefreshRepos() throws
+    func set(repos: [URL: RepoRecord])
 //    func addRepo()
 //    func removeRepo()
 //    func updateRepo()

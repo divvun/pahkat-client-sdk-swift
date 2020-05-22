@@ -169,41 +169,12 @@ pahkat_macos_transaction_process(const void *_Nonnull handle,
 
 // MARK: Store config functions
 
-extern rust_slice_t
-pahkat_store_config_config_path(const void *_Nonnull handle, ERR_CALLBACK);
-
-extern void
-pahkat_store_config_set_ui_value(const void *_Nonnull handle,
-                                 rust_slice_t key,
-                                 const char *_Nullable value,
-                                 ERR_CALLBACK);
-
-extern const char *_Nullable
-pahkat_store_config_ui_value(const void *_Nonnull handle,
-                             rust_slice_t key,
-                             ERR_CALLBACK);
-
-extern void
-pahkat_store_config_set_cache_base_url(const void *_Nonnull handle,
-                                       rust_slice_t path,
-                                       ERR_CALLBACK);
 
 extern rust_slice_t
-pahkat_store_config_cache_base_url(const void *_Nonnull handle,
-                                   ERR_CALLBACK);
-
-extern const char *_Nullable
-pahkat_store_config_skipped_package(const void *_Nonnull handle,
-                                    rust_slice_t package_key,
-                                    ERR_CALLBACK);
-
-extern rust_slice_t
-pahkat_store_config_repos(const void *_Nonnull handle, ERR_CALLBACK);
+pahkat_config_repos_get(const void *_Nonnull handle, ERR_CALLBACK);
 
 extern void
-pahkat_store_config_set_repos(const void *_Nonnull handle,
-                              rust_slice_t repos,
-                              ERR_CALLBACK);
+pahkat_config_repos_set(const void *_Nonnull handle, rust_slice_t repo_data, ERR_CALLBACK);
 
 // MARK: Utility functions
 extern void

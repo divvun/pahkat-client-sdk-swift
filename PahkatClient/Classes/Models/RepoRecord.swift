@@ -8,11 +8,9 @@
 import Foundation
 
 public struct RepoRecord: Codable, Equatable, Hashable {
-    public let url: URL
     public let channel: Repository.Channels
     
-    public init(url: URL, channel: Repository.Channels) {
-        self.url = url
+    public init(channel: Repository.Channels) {
         self.channel = channel
     }
 }

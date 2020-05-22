@@ -1,5 +1,5 @@
 PODS:
-  - PahkatClient (0.2.0)
+  - PahkatClient (0.2.5)
 
 DEPENDENCIES:
   - PahkatClient (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PahkatClient: 54d6c257cbefe58e7b213d25f1c5e147aa3adcb1
+  PahkatClient: b675dbdcb738ae4f373b483bc6140d871ab8a7e0
 
 PODFILE CHECKSUM: c3cc65c752d52f8e19162bc002c252b323c2ac57
 
