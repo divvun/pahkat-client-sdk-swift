@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print("Package key: \(pkgKey)")
 ////        let status = index.status(for: pkgKey)
 //        print(try! store.allStatuses(repo: RepoRecord(url: index.meta.base, channel: .stable)))
-        let pkgKey = PackageKey(from: URL(string: "https://x.brendan.so/divvun-pahkat-repo/packages/speller-sme?platform=ios")!)
+        let pkgKey = try! PackageKey.from(url: URL(string: "https://x.brendan.so/divvun-pahkat-repo/packages/speller-sme?platform=ios")!)
 
         do {
            downloading = try store.download(packageKey: pkgKey) { (error, path) in

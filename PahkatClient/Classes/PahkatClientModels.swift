@@ -433,52 +433,149 @@ public struct PackageStatusResponse: Codable {
     public let target: InstallerTarget
 }
 
-public struct PackageKey: Codable, Hashable, Comparable {
-    public let url: String
-    public let id: String
-    public let channel: String?
-    
-    public let rawValue: String
-    
-    public init(from decoder: Decoder) throws {
-        let string = try decoder.singleValueContainer().decode(String.self)
-        self.init(from: URL(string: string)!)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(self.rawValue)
-    }
-    
-    public static func < (lhs: PackageKey, rhs: PackageKey) -> Bool {
-        return lhs.rawValue < rhs.rawValue
-    }
-    
-    public static func == (lhs: PackageKey, rhs: PackageKey) -> Bool {
-        return lhs.rawValue == rhs.rawValue
-    }
-    
-    public init(from url: URL) {
-        // TODO: make this less dirty by only selecting the pieces of the URL we want
-        let newUrl: URL = {
-            var eh = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-            eh.fragment = nil
-            return eh.url!
-                .deletingLastPathComponent()
-                .deletingLastPathComponent()
-                .absoluteURL
-        }()
-        self.url = newUrl.absoluteString
-        self.id = url.lastPathComponent
-        
-        let u = newUrl.appendingPathComponent("packages")
-            .appendingPathComponent(id)
-            .absoluteString
-        self.rawValue = "\(u)"
-        self.channel = nil // TODO
+public struct PackageKeyParams: Equatable, Hashable {
+    private(set) var platform: String?
+    private(set) var arch: String?
+    private(set) var version: String?
+    private(set) var channel: String?
+
+    init?(queryItems: [URLQueryItem]) {
+        for item in queryItems {
+            let name = item.name
+            let value = item.value
+
+            switch name {
+            case "platform":
+                self.platform = value
+            case "arch":
+                self.arch = value
+            case "version":
+                self.version = value
+            case "channel":
+                self.channel = value
+            default:
+                continue
+            }
+        }
+
+        if platform == nil && arch == nil && version == nil && channel == nil {
+            return nil
+        }
     }
 }
 
+extension Array where Element == URLQueryItem {
+    static func from(_ params: PackageKeyParams) -> [URLQueryItem] {
+        var out = [URLQueryItem]()
+
+        if let platform = params.platform {
+            out.append(URLQueryItem(name: "platform", value: platform))
+        }
+
+        if let arch = params.arch {
+            out.append(URLQueryItem(name: "arch", value: arch))
+        }
+
+        if let version = params.version {
+            out.append(URLQueryItem(name: "version", value: version))
+        }
+
+        if let channel = params.channel {
+            out.append(URLQueryItem(name: "channel", value: channel))
+        }
+
+        return out
+    }
+}
+
+public enum PackageKeyError: Error {
+    case invalidURL(String)
+}
+
+public class PackageKey: Equatable, Hashable, Codable, CustomDebugStringConvertible {
+    public let repositoryURL: URL
+    public let id: String
+    public let params: PackageKeyParams?
+
+    public required init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        let url = try c.decode(String.self)
+
+        let k = try PackageKey.from(urlString: url)
+        self.repositoryURL = k.repositoryURL
+        self.id = k.id
+        self.params = k.params
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.singleValueContainer()
+        try c.encode(self.toString())
+    }
+
+    public var debugDescription: String {
+        "URL: \(repositoryURL), id: \(id), params: \(String(describing: params))"
+    }
+
+    public init(repositoryURL: URL, id: String, params: PackageKeyParams? = nil) {
+        self.repositoryURL = repositoryURL
+        self.id = id
+        self.params = params
+    }
+
+    public static func from(url: URL) throws -> PackageKey {
+        guard let id = url.pathComponents.last else {
+            fatalError("this is impossible")
+        }
+
+        var newUrl = url.deletingLastPathComponent()
+
+        if let end = newUrl.pathComponents.last, end != "packages" {
+            throw PackageKeyError.invalidURL(url.absoluteString)
+        }
+
+        newUrl = newUrl.deletingLastPathComponent()
+
+        var components = URLComponents(url: newUrl, resolvingAgainstBaseURL: false)!
+        let queryItems = components.queryItems ?? []
+        let params = PackageKeyParams(queryItems: queryItems)
+
+        components.fragment = nil
+        components.query = nil
+
+        let repoURL = components.url!
+
+        return PackageKey(repositoryURL: repoURL, id: id, params: params)
+    }
+
+    public static func from(urlString: String) throws -> PackageKey {
+        guard let url = URL(string: urlString) else {
+            throw PackageKeyError.invalidURL(urlString)
+        }
+
+        return try PackageKey.from(url: url)
+    }
+
+    public static func == (lhs: PackageKey, rhs: PackageKey) -> Bool {
+        lhs.repositoryURL == rhs.repositoryURL
+            && lhs.id == rhs.id
+            && lhs.params == rhs.params
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(repositoryURL)
+        hasher.combine(id)
+        hasher.combine(params)
+    }
+
+    public func toString() -> String {
+        var urlBuilder = URLComponents(url: repositoryURL
+            .appendingPathComponent("packages")
+            .appendingPathComponent(id), resolvingAgainstBaseURL: false)!
+
+        urlBuilder.queryItems = params.map { [URLQueryItem].from($0) }
+        return urlBuilder.url!.absoluteString
+    }
+}
 
 @objc public class RepositoryIndex: NSObject, Decodable, Comparable {
     public let meta: Repository
@@ -512,10 +609,10 @@ public struct PackageKey: Codable, Hashable, Comparable {
     }
     
     public func package(for key: PackageKey) -> Package? {
-        if key.url != meta.base.absoluteString || key.channel != channel.rawValue {
-            return nil
-        }
-        
+//        if key.url != meta.base.absoluteString || key.channel != channel.rawValue {
+//            return nil
+//        }
+//
         return packages[key.id]
     }
     
@@ -532,12 +629,7 @@ public struct PackageKey: Codable, Hashable, Comparable {
 //    }
     
     public func absoluteKey(for package: Package) -> PackageKey {
-        var builder = URLComponents(url: meta.base
-            .appendingPathComponent("packages")
-            .appendingPathComponent(package.id), resolvingAgainstBaseURL: false)!
-        builder.fragment = channel.rawValue
-        
-        return PackageKey(from: builder.url!)
+        return PackageKey(repositoryURL: self.meta.base, id: package.id)
     }
     
     func set(statuses: [PackageKey: PackageStatusResponse]) {

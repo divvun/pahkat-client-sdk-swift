@@ -45,7 +45,7 @@ public class PrefixPackageStore: NSObject {
     }
     
     public func resolvePackage(packageKey: PackageKey) throws -> Package? {
-        let cJsonPackage = packageKey.rawValue.withRustSlice { cPackageKey in
+        let cJsonPackage = packageKey.toString().withRustSlice { cPackageKey in
             pahkat_prefix_package_store_find_package_by_key(handle, cPackageKey, errCallback)
         }
         try assertNoError()
@@ -67,14 +67,14 @@ public class PrefixPackageStore: NSObject {
 //            throw PahkatClientError(message: "No tarball installer for \(packageKey.rawValue)")
 //        }
         
-        let urlPtr = packageKey.rawValue.withRustSlice { cPackageKey in
+        let urlPtr = packageKey.toString().withRustSlice { cPackageKey in
             pahkat_prefix_package_store_download_url(handle, cPackageKey, errCallback)
         }
         try assertNoError()
         let url = URL(string: String.from(slice: urlPtr!))!
         
         let task = self.urlSession.downloadTask(with: url)
-        task.taskDescription = packageKey.rawValue
+        task.taskDescription = packageKey.toString()
         
         if #available(OSX 10.13, iOS 11.0, *) {
 //            task.countOfBytesClientExpectsToReceive = Int64(installer.size)
@@ -93,7 +93,7 @@ public class PrefixPackageStore: NSObject {
     }
     
     public func `import`(packageKey: PackageKey, installerPath: String) throws -> String {
-        let slice = packageKey.rawValue.withRustSlice { cPackageKey in
+        let slice = packageKey.toString().withRustSlice { cPackageKey in
             installerPath.withRustSlice { cPath in
                 pahkat_prefix_package_store_import(handle, cPackageKey, cPath, errCallback)
             }
@@ -153,7 +153,7 @@ public class PrefixPackageStore: NSObject {
     }
     
     public func status(for packageKey: PackageKey) throws -> PackageInstallStatus {
-        let status = packageKey.rawValue.withRustSlice { cStr in
+        let status = packageKey.toString().withRustSlice { cStr in
             pahkat_prefix_package_store_status(handle, cStr, errCallback)
         }
         try assertNoError()
@@ -241,6 +241,6 @@ fileprivate extension URLSessionTask {
     var packageKey: PackageKey? {
         guard let s = self.taskDescription else { return nil }
         guard let url = URL(string: s) else { return nil }
-        return PackageKey(from: url)
+        return try? PackageKey.from(url: url)
     }
 }

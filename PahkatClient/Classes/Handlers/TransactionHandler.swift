@@ -22,7 +22,9 @@ internal let transactionProcessHandler: @convention(c) (UInt32, rust_slice_t, UI
         return false
     }
     
-    let packageKey = PackageKey(from: URL(string: String.from(slice: cPackageKey))!)
+    guard let packageKey = try? PackageKey.from(url: URL(string: String.from(slice: cPackageKey))!) else {
+        return false
+    }
     
     guard let event = PackageTransactionEvent(rawValue: cEvent) else {
         delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)

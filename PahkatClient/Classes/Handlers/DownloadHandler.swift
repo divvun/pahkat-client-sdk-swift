@@ -10,8 +10,9 @@ import Foundation
 internal var downloadProcessCallbacks = [PackageKey: PackageDownloadDelegate]()
 
 internal let downloadProcessHandler: @convention(c) (UnsafePointer<CChar>, UInt64, UInt64) -> UInt8 = { cPackageKey, current, maximum in
-    
-    let packageKey = PackageKey(from: URL(string: String(cString: cPackageKey))!)
+    guard let packageKey = try? PackageKey.from(urlString: String(cString: cPackageKey)) else {
+        return 0
+    }
     
     guard let delegate = downloadProcessCallbacks[packageKey] else {
         // TODO: log

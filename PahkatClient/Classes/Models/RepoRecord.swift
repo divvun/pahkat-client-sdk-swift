@@ -9,4 +9,8 @@ import Foundation
 
 public struct RepoRecord: Codable, Equatable, Hashable {
     public let channel: String?
+
+    public init(channel: String?) {
+        self.channel = channel
+    }
 }
