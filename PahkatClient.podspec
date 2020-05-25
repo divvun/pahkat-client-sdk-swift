@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PahkatClient'
-  s.version          = '0.2.6'
+  s.version          = '0.2.7'
   s.summary          = 'Swift SDK for Pahkat Client'
   s.description      = <<-DESC
   Swift SDK for Pahkat Client
