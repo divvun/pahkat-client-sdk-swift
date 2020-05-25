@@ -1,15 +1,26 @@
 import Foundation
 
+public class Pahkat {
+    public static func enableLogging() {
+        pahkat_enable_logging(5)
+    }
+}
+
 public class PrefixPackageStore: NSObject {
-    public var backgrounURLSessionCompletion: (() -> Void)? // TODO: consider making this more elegant
+    public var backgroundURLSessionCompletion: (() -> Void)? // TODO: consider making this more elegant
     private let handle: UnsafeRawPointer
+    private let configHandle: UnsafeRawPointer
     
     public static func create(path prefixPath: String) throws -> PrefixPackageStore {
         let handle = prefixPath.withRustSlice {
             pahkat_prefix_package_store_create($0, errCallback)
         }
         try assertNoError()
-        return PrefixPackageStore(handle: handle!!)
+
+        let configHandle = pahkat_prefix_package_store_config(handle!!, errCallback)
+        try assertNoError()
+
+        return PrefixPackageStore(handle: handle!!, configHandle: configHandle!)
     }
     
     public static func open(path prefixPath: String) throws -> PrefixPackageStore {
@@ -17,7 +28,11 @@ public class PrefixPackageStore: NSObject {
             pahkat_prefix_package_store_open($0, errCallback)
         }
         try assertNoError()
-        return PrefixPackageStore(handle: handle!!)
+
+        let configHandle = pahkat_prefix_package_store_config(handle!!, errCallback)
+        try assertNoError()
+
+        return PrefixPackageStore(handle: handle!!, configHandle: configHandle!)
     }
     
 //    public func config() throws -> StoreConfig {
@@ -40,8 +55,9 @@ public class PrefixPackageStore: NSObject {
         return URLSession(configuration: config, delegate: self, delegateQueue: nil)
     }()
     
-    internal init(handle: UnsafeRawPointer) {
+    internal init(handle: UnsafeRawPointer, configHandle: UnsafeRawPointer) {
         self.handle = handle
+        self.configHandle = configHandle
     }
     
     public func resolvePackage(packageKey: PackageKey) throws -> Package? {
@@ -164,8 +180,9 @@ public class PrefixPackageStore: NSObject {
     public func transaction(actions: [TransactionAction<Empty>]) throws -> PackageTransaction<Empty> {
         print("Encoding: \(actions)")
         let jsonActions = try JSONEncoder().encode(actions)
-        print("Encoded: \(jsonActions)")
-        let ptr = String(data: jsonActions, encoding: .utf8)!.withRustSlice { cStr in
+        let s = String(data: jsonActions, encoding: .utf8)!
+        print("Encoded: \(s)")
+        let ptr = s.withRustSlice { cStr in
             pahkat_prefix_transaction_new(handle, cStr, errCallback)
         }
         try assertNoError()
@@ -173,10 +190,16 @@ public class PrefixPackageStore: NSObject {
     }
 
     public func set(repos: [URL: RepoRecord]) throws {
-        let jsonRepos = try JSONEncoder().encode(repos)
+        var stringRepos = [String: RepoRecord]()
+        for (k, v) in repos {
+            stringRepos[k.absoluteString] = v
+        }
+        let jsonRepos = try JSONEncoder().encode(stringRepos)
+        let repos = String(data: jsonRepos, encoding: .utf8)!
+        print(repos)
 
-        String(data: jsonRepos, encoding: .utf8)!.withRustSlice { cStr in
-            pahkat_config_repos_set(handle, cStr, errCallback)
+        repos.withRustSlice { cStr in
+            pahkat_config_repos_set(configHandle, cStr, errCallback)
         }
         
         try assertNoError()
@@ -187,7 +210,7 @@ public class PrefixPackageStore: NSObject {
 extension PrefixPackageStore: URLSessionDelegate {
     @available(iOS 9.0, *)
     public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        backgrounURLSessionCompletion?()
+        backgroundURLSessionCompletion?()
     }
 }
 #endif
@@ -229,10 +252,15 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
         do {
             let path = try self.import(packageKey: packageKey, installerPath: location.path)
             print("Path imported: \(path)")
-            self.downloadCallbacks[packageKey]?(nil, path)
+
+            DispatchQueue.main.async {
+                self.downloadCallbacks[packageKey]?(nil, path)
+            }
         } catch {
             print(error)
-            self.downloadCallbacks[packageKey]?(error, nil)
+            DispatchQueue.main.async {
+                self.downloadCallbacks[packageKey]?(error, nil)
+            }
         }
     }
 }

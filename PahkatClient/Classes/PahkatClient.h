@@ -181,7 +181,7 @@ extern void
 pahkat_str_free(rust_slice_t ptr);
 
 extern void
-pahkat_enable_logging();
+pahkat_enable_logging(uint8_t level);
 
 #ifdef __cplusplus
 }

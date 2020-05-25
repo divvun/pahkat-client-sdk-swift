@@ -21,10 +21,16 @@ internal let transactionProcessHandler: @convention(c) (UInt32, rust_slice_t, UI
         transactionProcessCallbacks.removeValue(forKey: tag)
         return false
     }
-    
-    guard let packageKey = try? PackageKey.from(url: URL(string: String.from(slice: cPackageKey))!) else {
-        return false
+
+
+    var packageKey: PackageKey? = nil
+
+    if cPackageKey.data != nil {
+        if let key = try? PackageKey.from(urlString: String.from(slice: cPackageKey)) {
+            packageKey = key
+        }
     }
+
     
     guard let event = PackageTransactionEvent(rawValue: cEvent) else {
         delegate.transactionDidUnknownEvent(tag, packageKey: packageKey, event: cEvent)
