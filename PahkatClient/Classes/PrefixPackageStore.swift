@@ -70,7 +70,7 @@ public class PrefixPackageStore: NSObject {
         return try JSONDecoder().decode(Package.self, from: data)
     }
     
-    private var downloadCallbacks = [PackageKey: (Error?, String?) -> ()]()
+    private var downloadCallbacks: Mutex<[PackageKey: (Error?, String?) -> ()]> = Mutex([:])
     
     @discardableResult
     public func download(packageKey: PackageKey, completion: ((Error?, String?) -> ())? = nil) throws -> URLSessionDownloadTask {
@@ -99,7 +99,8 @@ public class PrefixPackageStore: NSObject {
         }
         
         if let completion = completion {
-            downloadCallbacks[packageKey] = completion
+            let lock = downloadCallbacks.lock()
+            lock.value[packageKey] = completion
         }
         
         print("RESUME \(url)")
@@ -215,6 +216,7 @@ extension PrefixPackageStore: URLSessionDelegate {
 }
 #endif
 
+
 extension PrefixPackageStore: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
         print("\(downloadTask.packageKey): \(fileOffset)/\(expectedTotalBytes)")
@@ -227,13 +229,14 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
             print(task)
             return
         }
-        
-        print(error)
-        defer {
-            self.downloadCallbacks.removeValue(forKey: packageKey)
+
+
+        if let error = error {
+            print("An error occurred downloading \(task.packageKey): \(error)")
+            let lock = self.downloadCallbacks.lock()
+            lock.value[packageKey]?(error, nil)
+            lock.value.removeValue(forKey: packageKey)
         }
-        
-        self.downloadCallbacks[packageKey]?(error, nil)
     }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
@@ -244,7 +247,8 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
         }
 
         defer {
-            self.downloadCallbacks.removeValue(forKey: packageKey)
+            let lock = self.downloadCallbacks.lock()
+            lock.value.removeValue(forKey: packageKey)
         }
         
         print("Path: \(location.path)")
@@ -253,14 +257,12 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
             let path = try self.import(packageKey: packageKey, installerPath: location.path)
             print("Path imported: \(path)")
 
-            DispatchQueue.main.async {
-                self.downloadCallbacks[packageKey]?(nil, path)
-            }
+            let lock = self.downloadCallbacks.lock()
+            lock.value[packageKey]?(nil, path)
         } catch {
             print(error)
-            DispatchQueue.main.async {
-                self.downloadCallbacks[packageKey]?(error, nil)
-            }
+            let lock = self.downloadCallbacks.lock()
+            lock.value[packageKey]?(error, nil)
         }
     }
 }

@@ -121,3 +121,38 @@ extension rust_bool_t {
         return this.internal_value == 0 ? true : false
     }
 }
+
+class Mutex<T> {
+    fileprivate var semaphore = DispatchSemaphore(value: 1)
+    fileprivate var item: T
+
+    public init(_ item: T) {
+        self.item = item
+    }
+
+    public func lock() -> MutexGuard<T> {
+        self.semaphore.wait()
+        return MutexGuard(self)
+    }
+}
+
+class MutexGuard<T> {
+    private unowned let mutex: Mutex<T>
+
+    var value: T {
+        get {
+            mutex.item
+        }
+        set {
+            mutex.item = newValue
+        }
+    }
+
+    deinit {
+        mutex.semaphore.signal()
+    }
+
+    fileprivate init(_ mutex: Mutex<T>) {
+        self.mutex = mutex
+    }
+}
