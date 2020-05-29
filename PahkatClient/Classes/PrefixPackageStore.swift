@@ -254,10 +254,9 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
         print("Path: \(location.path)")
         
         do {
+            let lock = self.downloadCallbacks.lock()
             let path = try self.import(packageKey: packageKey, installerPath: location.path)
             print("Path imported: \(path)")
-
-            let lock = self.downloadCallbacks.lock()
             lock.value[packageKey]?(nil, path)
         } catch {
             print(error)
