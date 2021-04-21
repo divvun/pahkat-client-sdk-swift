@@ -12,14 +12,14 @@ use pahkat_types::package::Package;
 use pahkat_types::repo::RepoUrl;
 use serde::de::{self, Deserializer};
 use serde::Deserialize;
-use url::Url;
+
 
 use super::{PackageStore, SharedRepoErrors, SharedRepos, SharedStoreConfig};
 use crate::package_store::{ImportError, InstallTarget, LocalizedStrings};
 use crate::repo::{PackageQuery, RepoDownloadError, PackageCandidateError};
 use crate::transaction::{install::InstallError, install::ProcessError, uninstall::UninstallError};
 use crate::transaction::{
-    PackageStatus, PackageStatusError, ResolvedDescriptor, ResolvedPackageQuery, PackageDependencyStatusError,
+    PackageStatus, PackageStatusError, ResolvedPackageQuery, PackageDependencyStatusError,
 };
 use crate::{cmp, Config, PackageKey, PackageActionType};
 
@@ -155,7 +155,7 @@ impl PackageStore for MacOSPackageStore {
 
         let (target, release, descriptor) = crate::repo::resolve_payload(key, &query, &*repos)
             .map_err(PackageStatusError::Payload)?;
-        let installer = match target.payload {
+        let _installer = match target.payload {
             pahkat_types::payload::Payload::MacOSPackage(v) => v,
             _ => return Err(PackageStatusError::WrongPayloadType),
         };

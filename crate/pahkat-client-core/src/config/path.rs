@@ -1,14 +1,14 @@
 use std::fmt;
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use std::convert::TryFrom;
 
-use once_cell::sync::{Lazy, OnceCell};
+
 use serde::de::{self, Deserializer, Visitor};
 use serde::ser::Serializer;
 use serde::{Deserialize, Serialize};
 use std::convert::TryInto;
 use thiserror::Error;
-use url::Url;
+
 use pathos::iri::IriBufExt;
 
 #[derive(Debug, Clone, PartialEq, Hash)]

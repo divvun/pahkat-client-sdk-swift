@@ -14,7 +14,7 @@ use hashbrown::HashMap;
 use sha2::digest::Digest;
 use sha2::Sha256;
 use thiserror::Error;
-use url::Url;
+
 
 use crate::config::Config;
 use crate::defaults;
@@ -716,7 +716,7 @@ pub(crate) async fn refresh_repos(
     (res_map, err_map)
 }
 
-pub(crate) fn clear_cache(config: &Arc<RwLock<Config>>) {
+pub(crate) fn clear_cache(_config: &Arc<RwLock<Config>>) {
     // todo!()
 }
 
@@ -966,7 +966,7 @@ pub(crate) fn resolve_package_set(
     // Take our candidate set and resolve it down to a mutation set
     let mutation_set: Vec<PackageCandidate> = candidate_set
         .into_iter()
-        .filter_map(|(key, candidate)| {
+        .filter_map(|(_key, candidate)| {
             if candidate.action == PackageActionType::Install
                 && candidate.status == PackageStatus::UpToDate
             {

@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+
 use std::fmt;
 use std::sync::Arc;
 
@@ -320,7 +320,7 @@ impl PackageTransaction {
         log::debug!("New transaction with actions: {:#?}", &actions);
 
         let repos = store.repos();
-        let repos = repos.read().unwrap();
+        let _repos = repos.read().unwrap();
 
         // // Get mutation set (for install and uninstall actions)
         let install_target = actions

@@ -1,6 +1,6 @@
 use crate::config::ConfigPath;
 use std::path::{Path, PathBuf};
-use url::Url;
+
 use once_cell::sync::Lazy;
 // use
 

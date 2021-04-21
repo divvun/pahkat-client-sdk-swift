@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -35,7 +35,7 @@ impl LoadedRepository {
     pub async fn from_cache_or_url(
         url: RepoUrl,
         channel: Option<String>,
-        cache_dir: PathBuf,
+        _cache_dir: PathBuf,
     ) -> Result<LoadedRepository, RepoDownloadError> {
         Self::from_url(url, channel).await
     }

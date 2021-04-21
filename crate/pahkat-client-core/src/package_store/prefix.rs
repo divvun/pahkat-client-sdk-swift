@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, RwLock};
 
 use hashbrown::HashMap;
-use pahkat_types::package::{Descriptor, Package};
+use pahkat_types::package::{Package};
 use pahkat_types::repo::RepoUrl;
 use r2d2_sqlite::SqliteConnectionManager;
 use xz2::bufread::XzDecoder;
@@ -15,7 +15,7 @@ use super::InstallTarget;
 use crate::{PackageActionType, package_store::{SharedRepoErrors, SharedRepos, SharedStoreConfig}, repo::PackageCandidateError};
 use crate::repo::RepoDownloadError;
 use crate::transaction::{
-    install::InstallError, uninstall::UninstallError, PackageDependencyError, ResolvedPackageQuery, PackageDependencyStatusError,
+    install::InstallError, uninstall::UninstallError, ResolvedPackageQuery, PackageDependencyStatusError,
 };
 use crate::{
     cmp,
@@ -82,7 +82,7 @@ impl PrefixPackageStore {
             .map_err(Error::InvalidPrefixPath)?;
         create_dir_all(&prefix_path.join("pkg")).map_err(Error::CreateDirFailed)?;
 
-        let (config, errors) = Config::load(&prefix_path, crate::config::Permission::ReadWrite);
+        let (config, _errors) = Config::load(&prefix_path, crate::config::Permission::ReadWrite);
         // TODO: handle errors
 
         let db_file_path = PrefixPackageStore::package_db_path(&config);
@@ -111,7 +111,7 @@ impl PrefixPackageStore {
             .canonicalize()
             .map_err(Error::InvalidPrefixPath)?;
         log::debug!("{:?}", &prefix_path);
-        let (config, errors) = Config::load(&prefix_path, crate::config::Permission::ReadWrite);
+        let (config, _errors) = Config::load(&prefix_path, crate::config::Permission::ReadWrite);
 
 
         let db_file_path = PrefixPackageStore::package_db_path(&config);
@@ -211,7 +211,7 @@ impl PackageStore for PrefixPackageStore {
     fn install(
         &self,
         key: &PackageKey,
-        target: InstallTarget,
+        _target: InstallTarget,
     ) -> Result<PackageStatus, InstallError> {
         log::trace!("In prefix install");
 
@@ -348,14 +348,14 @@ impl PackageStore for PrefixPackageStore {
             crate::repo::ReleaseQuery::new(key, &*repos).and_payloads(vec!["TarballPackage"]);
         log::debug!("query: {:?}", &query);
 
-        let (target, release, package) = crate::repo::resolve_payload(key, &query, &*repos)
+        let (target, release, _package) = crate::repo::resolve_payload(key, &query, &*repos)
             .map_err(PackageStatusError::Payload)?;
         let _installer = match target.payload {
             pahkat_types::payload::Payload::TarballPackage(v) => v,
             _ => return Err(PackageStatusError::WrongPayloadType),
         };
 
-        let config = self.config.read().unwrap();
+        let _config = self.config.read().unwrap();
         let status = self::cmp::cmp(&record.version, &release.version);
 
         log::debug!("Status: {:?}", &status);

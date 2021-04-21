@@ -14,7 +14,7 @@ use std::sync::{Arc, RwLock};
 use hashbrown::HashMap;
 use pahkat_types::package::Package;
 use serde::{Deserialize, Serialize};
-use url::Url;
+
 
 use crate::config::Config;
 use crate::repo::{PackageQuery, RepoDownloadError};
