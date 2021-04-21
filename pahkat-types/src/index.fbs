@@ -1,0 +1,113 @@
+namespace pahkat;
+
+enum WindowsExecutableFlag: uint8 { // (bit_flags) {
+    TargetSystem = 0,
+    TargetUser = 1,
+    RequiresRebootOnUpdate = 32,
+    RequiresRebootOnUninstall = 64,
+    RequiresRebootOnInstall = 128
+}
+
+enum WindowsExecutableKind: uint8 {
+    NONE,
+    Msi,
+    Inno,
+    Nsis
+}
+
+table WindowsExecutable {
+    url: string (required);
+    product_code: string (required);
+    size: uint64;
+    installed_size: uint64;
+    // WORKAROUND LACK OF ENUM BITFLAGS IN RUST
+    //flags: WindowsExecutableFlag = TargetSystem;
+    flags: uint8;
+    kind: WindowsExecutableKind;
+    args: string;
+    uninstall_args: string;
+}
+
+enum MacOSPackageFlag: uint8 { // (bit_flags) {
+    TargetSystem = 0,
+    TargetUser = 1,
+    RequiresRebootOnUpdate = 32,
+    RequiresRebootOnUninstall = 64,
+    RequiresRebootOnInstall = 128
+}
+
+table MacOSPackage {
+    url: string (required);
+    pkg_id: string (required);
+    size: uint64;
+    installed_size: uint64;
+    // WORKAROUND LACK OF ENUM BITFLAGS IN RUST
+    // flags: MacOSPackageFlag = TargetSystem;
+    flags: uint8;
+}
+
+table TarballPackage {
+    url: string (required);
+    size: uint64;
+    installed_size: uint64;
+}
+
+union Payload {
+    WindowsExecutable,
+    MacOSPackage,
+    TarballPackage
+}
+
+table Target {
+    platform: string (required);
+    payload: Payload (required);
+    dependencies_keys: [string];
+    dependencies_values: [string];
+    arch: string;
+}
+
+table Release {
+    // TODO: temporary workaround
+    version_type: uint8;
+    version: string (required);
+    target: [Target];
+    channel: string;
+    authors: [string];
+    license: string;
+    license_url: string;
+}
+
+table Descriptor {
+    id: string (required);
+    release: [Release];
+    name_keys: [string];
+    name_values: [string];
+    description_keys: [string];
+    description_values: [string];
+    tags: [string];
+}
+
+table Synthetic {
+    todo: uint8;
+}
+
+table Redirect {
+    url: string (required);
+}
+
+union Package {
+    Descriptor,
+    Synthetic,
+    Redirect
+}
+
+table Packages {
+    packages_keys: [string];
+
+    // FIXME: workaround for unions of vecs
+    packages_values_types: [uint8];
+    packages_values: [Descriptor];
+    //packages_values: [Package];
+}
+
+root_type Packages;
