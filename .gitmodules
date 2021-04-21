@@ -1,4 +1,0 @@
-[submodule "pahkat"]
-	path = pahkat
-	url = https://github.com/divvun/pahkat
-	branch = feature/toml
