@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "pahkat-types",
+    # "pahkat-common",
+    # "pahkat-server",
+    "pahkat-rpc",
+    "pahkat-client-core",
+    "pahkat-repomgr",
+    "pahkat-cli",
+]
+
+exclude = [
+    "pahkat-server",
+    "pahkat-uploader",
+]
