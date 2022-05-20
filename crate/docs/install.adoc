@@ -1,3 +1,0 @@
-=== Building from source
-
-Clone the github repository, then run `cargo build --release --feature binaries`. `pahkat` will be in the `target/release/` directory.
