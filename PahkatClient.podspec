@@ -1,6 +1,6 @@
 Pod::Spec.new { |spec|
   spec.name = 'PahkatClient'
-  spec.version = '0.1.0'
+  spec.version = '0.2.0'
   spec.summary = 'UNKNOWN'
   spec.authors = {
     'Brendan Molloy' => 'brendan@bbqsrc.net',
@@ -21,6 +21,6 @@ Pod::Spec.new { |spec|
   spec.preserve_paths = ['dist/**/*']
   spec.source_files = ['src/**/*']
   spec.source = {
-    :http => 'UNKNOWN',
+    :http => 'https://github.com/divvun/pahkat-client-sdk-swift/releases/download/v#{spec.version}/cargo-pod.tgz',
   }
 }
