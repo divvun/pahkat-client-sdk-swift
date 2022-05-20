@@ -1,0 +1,28 @@
+[package]
+name = "pahkat-cli"
+version = "2.1.1"
+authors = ["Brendan Molloy <brendan@bbqsrc.net>"]
+license = "GPL-3.0"
+edition = "2018"
+
+[[bin]]
+name = "pahkat-cli"
+path = "src/main.rs"
+
+[dependencies]
+pahkat-client = { path = "../pahkat-client-core", default-features = false }
+structopt = { version = "0.3.13", features = ["color"] }
+directories = "2.0.2"
+anyhow = "1.0.28"
+indicatif = "0.14.0"
+env_logger = "0.7.1"
+tokio = { version = "0.2", features = ["rt-threaded", "time", "stream", "fs", "macros", "uds", "sync", "blocking", "signal"] }
+futures = { version = "0.3", default-features = false, features = ["alloc"] }
+pahkat-types = { path = "../pahkat-types" }
+thiserror = "1.0.30"
+
+[features]
+default = []
+windows = ["pahkat-client/windows"]
+prefix = ["pahkat-client/prefix"]
+macos = ["pahkat-client/macos"]
