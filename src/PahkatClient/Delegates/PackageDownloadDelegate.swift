@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PackageDownloadDelegate: class {
+public protocol PackageDownloadDelegate: AnyObject {
     var isDownloadCancelled: Bool { get }
     
     func downloadDidProgress(_ packageKey: PackageKey, current: UInt64, maximum: UInt64)

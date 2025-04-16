@@ -219,12 +219,12 @@ extension PrefixPackageStore: URLSessionDelegate {
 
 extension PrefixPackageStore: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
-        print("\(downloadTask.packageKey): \(fileOffset)/\(expectedTotalBytes)")
+        print("\(String(describing: downloadTask.packageKey)): \(fileOffset)/\(expectedTotalBytes)")
     }
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let packageKey = task.packageKey else {
-            print(error)
+            print(error as Any)
             print("Unknown download task, ignoring.")
             print(task)
             return
@@ -232,7 +232,7 @@ extension PrefixPackageStore: URLSessionDownloadDelegate {
 
 
         if let error = error {
-            print("An error occurred downloading \(task.packageKey): \(error)")
+            print("An error occurred downloading \(String(describing: task.packageKey)): \(error)")
             let lock = self.downloadCallbacks.lock()
             lock.value[packageKey]?(error, nil)
             lock.value.removeValue(forKey: packageKey)

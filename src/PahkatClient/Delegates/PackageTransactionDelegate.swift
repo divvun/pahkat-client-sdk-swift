@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PackageTransactionDelegate: class {
+public protocol PackageTransactionDelegate: AnyObject {
     func isTransactionCancelled(_ id: UInt32) -> Bool
     
     func transactionWillInstall(_ id: UInt32, packageKey: PackageKey?)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PackageStore: class {
+protocol PackageStore: AnyObject {
     associatedtype Target: Codable
     
     func config() throws -> StoreConfig
