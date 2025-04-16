@@ -1,6 +1,6 @@
 Pod::Spec.new { |spec|
   spec.name = 'PahkatClient'
-  spec.version = '0.2.0'
+  spec.version = '0.2.3'
   spec.summary = 'UNKNOWN'
   spec.authors = {
     'Brendan Molloy' => 'brendan@bbqsrc.net',
